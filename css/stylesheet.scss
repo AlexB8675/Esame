@@ -33,7 +33,7 @@ div {
 }
 
 div *::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
     height: 4px;
 }
 
@@ -42,7 +42,7 @@ div *::-webkit-scrollbar-thumb {
     border: 4px solid transparent;
     background-clip: padding-box;
     border-radius: 16px;
-    background: rgb(90, 90, 90);
+    background: rgb(34, 34, 34);
 }
 
 .separator {
@@ -74,6 +74,7 @@ div *::-webkit-scrollbar-thumb {
         align-self: center;
         margin: auto 0;
         background: rgb(54, 57, 63);
+        border: 1px solid rgb(142, 143, 144);
         flex-direction: column;
         border-radius: 8px;
         transition: height 250ms;
@@ -103,7 +104,7 @@ div *::-webkit-scrollbar-thumb {
                 padding: 8px 16px;
                 outline: none;
                 color: white;
-                border: 1px solid rgb(66, 69, 74);
+                border: 1px solid rgb(108, 108, 109);
                 margin: 16px 32px;
             }
 
@@ -134,7 +135,7 @@ div *::-webkit-scrollbar-thumb {
     .sidebar {
         width: 320px;
         height: 100%;
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         flex-direction: column;
         overflow: hidden auto;
         background: rgb(41, 43, 47);
@@ -145,7 +146,8 @@ div *::-webkit-scrollbar-thumb {
             flex: 0 0 auto;
             flex-direction: column;
             align-items: center;
-            padding: 6px 0;
+            padding: 8px 0;
+            margin: 2px 0;
             font-size: 16pt;
             text-overflow: ellipsis;
 
@@ -174,7 +176,7 @@ div *::-webkit-scrollbar-thumb {
                     font-size: 16pt;
                     color: white;
                     align-self: center;
-                    margin: 0 6px;
+                    margin: 0 6px 0 12px;
                     overflow: auto hidden;
                     white-space: nowrap;
                     outline: 0;
@@ -199,7 +201,55 @@ div *::-webkit-scrollbar-thumb {
         }
     }
     .content {
-        height: 100%;
+        padding: 24px 0;
         background: rgb(54, 57, 63);
+        overflow: hidden auto;
+
+        .items {
+            flex: 0 1 auto;
+            overflow: visible;
+            flex-flow: row wrap;
+            justify-content: center;
+            height: fit-content;
+            padding: 24px;
+
+            .item {
+                flex: 0 0 auto;
+                height: 256px;
+                width: 256px;
+                margin: 16px;
+                background:
+                    rgb(64, 68, 75)
+                    no-repeat
+                    center
+                    center;
+                box-shadow: 0 0 0 rgb(56, 62, 64);
+                border: 3px solid rgb(36, 36, 36);
+                padding: 8px;
+                border-radius: 8px;
+                transition: box-shadow 250ms linear;
+
+                &:hover {
+                    box-shadow: 0 0 6px 3px rgb(26, 25, 25);
+                    cursor: pointer;
+                }
+
+                &:last-child {
+                    font-size: 64pt;
+                    color: black;
+                    align-items: center;
+                    justify-content: center;
+                    transition:
+                        box-shadow 250ms linear,
+                        font-size  250ms linear,
+                        color      250ms linear;
+                }
+
+                &:last-child:hover {
+                    font-size: 80pt;
+                    color: rgb(88, 101, 242);
+                }
+            }
+        }
     }
 }

@@ -1,19 +1,47 @@
 $(function () {
+    const category_handler = function (ctg) {
+        if ($(ctg).attr('aria-label') !== 'active') {
+            fetch({
+                kind: 'objects',
+                categoria: $(ctg).data('id')
+            }, (response) => {
+                const items = $('div[class="items"]');
+                items.html('');
+                for (const each of response) {
+                    items.append(
+                        $('<div class="item">')
+                            .css({
+                                'background': `url("${each['percorso']}") rgb(64, 68, 75) no-repeat center center`
+                            })
+                            .on('click', function () {
+                                // TODO: Behaviour.
+                            }));
+                }
+                items.append('<div class="item" id="obj-insert">&plus;</div>');
+            });
+            $('#ctg-items div[class="item"]')
+                .attr('aria-label', '')
+                .css({
+                    'background': ''
+                })
+                .filter(ctg)
+                .css({
+                    'background': 'rgb(50, 53, 59)'
+                })
+                .attr('aria-label', 'active');
+        }
+    };
+
     (() => { // Fetch & Set all the categories.
         fetch({
             kind: 'category'
         }, (response) => {
             for (const each of response) {
-                $('#ctg-items').append(`<div class="item" aria-label="${each['id']}">${each['nome']}</div>`);
+                $('#ctg-items').append(`<div class="item" data-id="${each['id_categoria']}">${each['nome']}</div>`);
             }
             $('#ctg-items div[class="item"]')
                 .on('click', function () {
-                    fetch({
-                        kind: 'objects',
-                        category: $(this).attr('aria-label')
-                    }, (response) => {
-                        // TODO: Fill right hand side with objects.
-                    });
+                    category_handler(this);
                 });
         });
     })();
@@ -71,7 +99,6 @@ $(function () {
                 event.preventDefault();
                 $('#ctg-submit').trigger('click');
             }
-            // TODO: Something.
         });
     $('#ctg-submit')
         .on('click', function () {
@@ -79,10 +106,17 @@ $(function () {
             if (category.length !== 0) {
                 insert({
                     kind: 'category',
-                    category: category
-                }, (_) => {
+                    categoria: category
+                }, (response) => {
                     $('#ctg-input').html('');
                     $('.back-layer').trigger('mousedown');
+                    $('#ctg-items')
+                        .append(`<div class="item" data-id="${response['id']}">${response['nome']}</div>`)
+                        .children('div[class="item"]:last-child')
+                        .on('click', function () {
+                            category_handler(this);
+                        })
+                        .trigger('click');
                 });
             }
         });
@@ -112,6 +146,7 @@ function insert(data, callback) {
         url: 'php/insert.php',
         type: 'POST',
         data: data,
+        dataType: 'json',
         cache: false,
         success: (response) => {
             if ('error' in response) {

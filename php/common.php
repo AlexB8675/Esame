@@ -6,16 +6,16 @@
         $connection = mysqli_connect($hostname, $username, $password);
         if (!$connection) {
             die(json_encode([
-                'message'    => 'unreachable_server',
-                'error'      => '500'
+                'message' => 'unreachable_server',
+                'error'   => '500'
             ]));
         }
 
-        $database = 'esame';
+        $database = 'Esame';
         if (!mysqli_select_db($connection, $database)) {
             die(json_encode([
-                'message'    => 'unknown_database',
-                'error'      => '500'
+                'message' => 'unknown_database',
+                'error'   => '500'
             ]));
         }
 
@@ -29,17 +29,19 @@
 
         if (substr_count($query, '?') != count($params)) {
             die(json_encode([
-                'message'    => 'argument_mismatch',
-                'error'      => '500'
+                'message' => 'argument_mismatch',
+                'error'   => '500'
             ]));
         }
         foreach ($params as $arg) {
             $type   = gettype($arg);
             $types .= match ($type) {
-                'string', 'double', 'integer' => $type[0],
-                default                       => die(json_encode([
-                    'message'    => 'type_error',
-                    'error'      => '500'
+                'string'  => 's',
+                'double'  => 'd',
+                'integer' => 'i',
+                default   => die(json_encode([
+                    'message' => 'type_error',
+                    'error'   => '500'
                 ]))
             };
         }
@@ -56,8 +58,8 @@
         session_start();
         if (count($_SESSION) === 0) {
             die(json_encode([
-                'message'    => 'unauthorized',
-                'error'      => '401'
+                'message' => 'unauthorized',
+                'error'   => '401'
             ]));
         }
     }

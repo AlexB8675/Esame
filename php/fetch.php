@@ -14,5 +14,18 @@
                 ]));
             }
             return json_encode($result->get_result()->fetch_all(MYSQLI_ASSOC));
+        })(),
+
+        'objects' => (function () use ($connection) {
+            $query    = "select * from Oggetti where e_id_categoria = ?";
+            $category = $_GET['categoria'];
+            $result   = safe_query($connection, $query, $category);
+            if (!$result) {
+                die(json_encode([
+                    'message' => 'object_fetch',
+                    'error'   => '500'
+                ]));
+            }
+            return json_encode($result->get_result()->fetch_all(MYSQLI_ASSOC));
         })()
     };

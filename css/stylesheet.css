@@ -32,7 +32,7 @@ div {
 }
 
 div *::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
   height: 4px;
 }
 
@@ -41,7 +41,7 @@ div *::-webkit-scrollbar-thumb {
   border: 4px solid transparent;
   background-clip: padding-box;
   border-radius: 16px;
-  background: #5a5a5a;
+  background: #222222;
 }
 
 .separator {
@@ -73,6 +73,7 @@ div *::-webkit-scrollbar-thumb {
   align-self: center;
   margin: auto 0;
   background: #36393f;
+  border: 1px solid #8e8f90;
   flex-direction: column;
   border-radius: 8px;
   transition: height 250ms;
@@ -100,7 +101,7 @@ div *::-webkit-scrollbar-thumb {
   padding: 8px 16px;
   outline: none;
   color: white;
-  border: 1px solid #42454a;
+  border: 1px solid #6c6c6d;
   margin: 16px 32px;
 }
 .back-layer .category-insert .body .confirm {
@@ -126,7 +127,7 @@ div *::-webkit-scrollbar-thumb {
 .main-mount .sidebar {
   width: 320px;
   height: 100%;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   flex-direction: column;
   overflow: hidden auto;
   background: #292b2f;
@@ -137,7 +138,8 @@ div *::-webkit-scrollbar-thumb {
   flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  padding: 6px 0;
+  padding: 8px 0;
+  margin: 2px 0;
   font-size: 16pt;
   text-overflow: ellipsis;
 }
@@ -164,7 +166,7 @@ div *::-webkit-scrollbar-thumb {
   font-size: 16pt;
   color: white;
   align-self: center;
-  margin: 0 6px;
+  margin: 0 6px 0 12px;
   overflow: auto hidden;
   white-space: nowrap;
   outline: 0;
@@ -183,8 +185,44 @@ div *::-webkit-scrollbar-thumb {
   padding: 8px 6px;
 }
 .main-mount .content {
-  height: 100%;
+  padding: 24px 0;
   background: #36393f;
+  overflow: hidden auto;
+}
+.main-mount .content .items {
+  flex: 0 1 auto;
+  overflow: visible;
+  flex-flow: row wrap;
+  justify-content: center;
+  height: fit-content;
+  padding: 24px;
+}
+.main-mount .content .items .item {
+  flex: 0 0 auto;
+  height: 256px;
+  width: 256px;
+  margin: 16px;
+  background: #40444b no-repeat center center;
+  box-shadow: 0 0 0 #383e40;
+  border: 3px solid #242424;
+  padding: 8px;
+  border-radius: 8px;
+  transition: box-shadow 250ms linear;
+}
+.main-mount .content .items .item:hover {
+  box-shadow: 0 0 6px 3px #1a1919;
+  cursor: pointer;
+}
+.main-mount .content .items .item:last-child {
+  font-size: 64pt;
+  color: black;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 250ms linear, font-size 250ms linear, color 250ms linear;
+}
+.main-mount .content .items .item:last-child:hover {
+  font-size: 80pt;
+  color: #5865f2;
 }
 
 /*# sourceMappingURL=stylesheet.css.map */
