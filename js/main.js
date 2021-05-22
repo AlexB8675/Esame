@@ -5,8 +5,7 @@ $(function () {
                 kind: 'objects',
                 categoria: $(ctg).data('id')
             }, (response) => {
-                const items = $('div[class="items"]');
-                items.html('');
+                const items = $('#obj-items').html('');
                 for (const each of response) {
                     items.append(
                         $('<div class="item">')
@@ -17,13 +16,26 @@ $(function () {
                                 // TODO: Behaviour.
                             }));
                 }
-                items.append('<div class="item" id="obj-insert">&plus;</div>');
+                items.append(
+                    $('<div class="item" id="obj-insert">')
+                        .html('&plus;')
+                        .on('click', function () {
+                            $('.back-layer')
+                                .css({
+                                    'z-index': '1',
+                                    'opacity': '1'
+                                })
+                                .children('.object-insert')
+                                .css({
+                                    'height': 'fit-content',
+                                    'visibility': 'visible'
+                                });
+                            enable_hiding();
+                        }));
             });
             $('#ctg-items div[class="item"]')
                 .attr('aria-label', '')
-                .css({
-                    'background': ''
-                })
+                .removeAttr('style')
                 .filter(ctg)
                 .css({
                     'background': 'rgb(50, 53, 59)'
@@ -32,12 +44,39 @@ $(function () {
         }
     };
 
+    const enable_hiding = () => {
+        $('.back-layer')
+            .delay(200)
+            .queue(function () {
+                $(this)
+                    .dequeue()
+                    .on('mousedown', function (event) {
+                        if (event.target === this) {
+                            $(this)
+                                .off('mousedown')
+                                .css({
+                                    'opacity': ''
+                                })
+                                .delay(250)
+                                .queue(function () {
+                                    $(this)
+                                        .dequeue()
+                                        .removeAttr('style')
+                                        .children('.category-insert, .object-insert')
+                                        .removeAttr('style');
+                                });
+                        }
+                    });
+            });
+    };
+
     (() => { // Fetch & Set all the categories.
         fetch({
             kind: 'category'
         }, (response) => {
             for (const each of response) {
-                $('#ctg-items').append(`<div class="item" data-id="${each['id_categoria']}">${each['nome']}</div>`);
+                $('#ctg-items').append(
+                    `<div class="item" data-id="${each['id_categoria']}" aria-label>${each['nome']}</div>`);
             }
             $('#ctg-items div[class="item"]')
                 .on('click', function () {
@@ -47,54 +86,41 @@ $(function () {
     })();
 
     $('#ctg-search')
-        .on('keydown', function (event) {
+        .on('keyup', function (event) {
+            const search = $(this);
             if (event.key === 'Enter') {
                 event.preventDefault();
             }
-            // TODO: Something.
+            if (search.text() === '') {
+                $('#ctg-items div[class="item"]').show();
+            } else {
+                $('#ctg-items div[class="item"]')
+                    .hide()
+                    .each(function () {
+                        const criteria = search.text().toLowerCase();
+                        const current  = $(this).text().toLowerCase()
+                        if (current.indexOf(criteria) !== -1){
+                            $(this).show();
+                        }
+                    });
+            }
         });
     $('#ctg-insert')
         .on('click', function () {
-            const backbone = $('.back-layer');
-            backbone
+            $('.back-layer')
                 .css({
                     'z-index': '1',
                     'opacity': '1'
                 })
                 .children('.category-insert')
                 .css({
-                    'height': '300px'
+                    'height': 'fit-content',
+                    'visibility': 'visible'
                 });
-            backbone
-                .delay(200)
-                .queue(function () {
-                    $(this)
-                        .dequeue()
-                        .on('mousedown', function (event) {
-                            if (event.target === this) {
-                                $(this)
-                                    .off('mousedown')
-                                    .css({
-                                        'opacity': ''
-                                    })
-                                    .delay(250)
-                                    .queue(function () {
-                                        $(this)
-                                            .dequeue()
-                                            .css({
-                                                'z-index': ''
-                                            })
-                                            .children('.category-insert')
-                                            .css({
-                                                'height': ''
-                                            });
-                                    });
-                            }
-                        });
-                });
+            enable_hiding();
         });
     $('#ctg-input')
-        .on('keydown', function (event) {
+        .on('keyup', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
                 $('#ctg-submit').trigger('click');
@@ -117,6 +143,31 @@ $(function () {
                             category_handler(this);
                         })
                         .trigger('click');
+                });
+            }
+        });
+    $('#obj-input')
+        .on('keyup', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                $('#obj-submit').trigger('click');
+            }
+        });
+    $('#obj-submit')
+        .on('click', function () {
+            const object = $('#obj-input').text().trim();
+            if (object.length !== 0) {
+                insert({
+                    kind: 'object',
+                    oggetto: object
+                }, (response) => {
+                    $('#obj-input').html('');
+                    $('.back-layer').trigger('mousedown');
+                    $('#obj-insert').before(
+                        $('<div class="item">')
+                            .css({
+                                'background': `url("${response['percorso']}") rgb(64, 68, 75) no-repeat center center`
+                            }));
                 });
             }
         });

@@ -66,45 +66,61 @@ div *::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.66);
   transition: opacity 250ms;
 }
-.back-layer .category-insert {
-  width: 400px;
+.back-layer .category-insert, .back-layer .object-insert {
+  position: absolute;
+  width: fit-content;
   height: 100px;
   flex: 0 0 auto;
-  align-self: center;
-  margin: auto 0;
+  inset: 0;
+  margin: auto;
+  overflow: hidden;
   background: #36393f;
   border: 1px solid #8e8f90;
-  flex-direction: column;
+  flex-direction: row;
+  visibility: hidden;
   border-radius: 8px;
   transition: height 250ms;
 }
-.back-layer .category-insert .header {
+.back-layer .category-insert .media, .back-layer .object-insert .media {
+  flex: 1 0 auto;
+  flex-direction: column;
+  padding: 8px;
+}
+.back-layer .category-insert .main, .back-layer .object-insert .main {
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 8px;
+}
+.back-layer .category-insert .main .header, .back-layer .object-insert .main .header {
   flex: 0 0 auto;
   width: 100%;
 }
-.back-layer .category-insert .header .text {
+.back-layer .category-insert .main .header .text, .back-layer .object-insert .main .header .text {
   flex: 1 0 auto;
   font-size: 20pt;
   justify-content: center;
   padding: 24px 0;
   color: white;
 }
-.back-layer .category-insert .body {
-  flex: 1 0 auto;
+.back-layer .category-insert .main .body, .back-layer .object-insert .main .body {
+  flex: 0 0 auto;
   width: 100%;
   flex-direction: column;
 }
-.back-layer .category-insert .body .input {
+.back-layer .category-insert .main .body .input, .back-layer .object-insert .main .body .input {
   flex: 0 1 auto;
   font-size: 16pt;
   border-radius: 8px;
+  width: 320px;
   padding: 8px 16px;
   outline: none;
   color: white;
   border: 1px solid #6c6c6d;
   margin: 16px 32px;
 }
-.back-layer .category-insert .body .confirm {
+.back-layer .category-insert .main .body .confirm, .back-layer .object-insert .main .body .confirm {
   margin: 12px auto;
   padding: 8px 18px;
   width: fit-content;
@@ -114,7 +130,7 @@ div *::-webkit-scrollbar-thumb {
   border: 1px solid #42454a;
   border-radius: 8px;
 }
-.back-layer .category-insert .body .confirm:hover {
+.back-layer .category-insert .main .body .confirm:hover, .back-layer .object-insert .main .body .confirm:hover {
   cursor: pointer;
   background: #3a3e44;
 }
