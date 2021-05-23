@@ -85,6 +85,67 @@ $(function () {
         });
     })();
 
+    (() => { // Stores all the data prior to inserting an object.
+        let image = null;
+        let audio = null;
+        $('#obj-input-image')
+            .on('click', function () {
+                $('<input type="file">')
+                    .on('change', function (event) {
+                        image = event.target.files[0];
+                        if (['image/gif', 'image/jpeg', 'image/png'].includes(image['type'])) {
+                            let reader    = new FileReader();
+                            reader.onload = function () {
+                                $('#obj-input-image').html(`<img src="${reader.result}" alt>`);
+                            }
+                            reader.readAsDataURL(image);
+                        } else {
+                            alert('Il file caricato non è un immagine.');
+                        }
+                    })
+                    .trigger('click');
+            });
+        $('#obj-input-audio')
+            .on('click', function () {
+                $('<input type="file">')
+                    .on('change', function (event) {
+                        audio = event.target.files[0];
+                        if (!['audio/mpeg', 'audio/ogg'].includes(audio['type'])) {
+                            alert('Il file caricato non è un file audio.');
+                        }
+                    })
+                    .trigger('click');
+            });
+        $('#obj-submit')
+            .on('click', function () {
+                const nome = $('#obj-input-nome').text().trim();
+                const ita  = $('#obj-input-ita').text().trim();
+                const eng  = $('#obj-input-eng').text().trim();
+                if (image === null) {
+                    alert('Inserire un immagine.');
+                } else if (audio === null) {
+                    alert('Inserire un file audio.');
+                } else if (nome.length === 0) {
+                    alert('Inserire il nome dell\'oggetto');
+                } else if (ita.length === 0) {
+                    alert('Inserire la definizione in italiano');
+                } else if (eng.length === 0) {
+                    alert('Inserire la definizione in inglese');
+                }
+
+                let data = new FormData();
+                data.append('kind', 'object');
+                data.append('image', image);
+                data.append('audio', audio);
+                data.append('nome', nome);
+                data.append('ita', ita);
+                data.append('eng', eng);
+                insert(data, (response) => {
+                    console.log(response);
+                });
+            });
+    })();
+
     $('#ctg-search')
         .on('keyup', function (event) {
             const search = $(this);
@@ -198,6 +259,8 @@ function insert(data, callback) {
         type: 'POST',
         data: data,
         dataType: 'json',
+        processData: false,
+        contentType: false,
         cache: false,
         success: (response) => {
             if ('error' in response) {

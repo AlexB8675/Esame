@@ -119,6 +119,11 @@ div *::-webkit-scrollbar-thumb {
                     font-size  250ms linear,
                     color      250ms linear;
 
+                & > img {
+                    width: 256px;
+                    height: 256px;
+                }
+
                 &:hover {
                     font-size: 80pt;
                     cursor: pointer;
@@ -323,6 +328,11 @@ div *::-webkit-scrollbar-thumb {
                 &:last-child:hover {
                     font-size: 80pt;
                     color: rgb(88, 101, 242);
+                }
+
+                & > img {
+                    width: 256px;
+                    height: 256px;
                 }
             }
         }

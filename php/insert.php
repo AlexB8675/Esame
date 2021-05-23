@@ -18,6 +18,10 @@
                 'id'   => $result->insert_id,
                 'nome' => $category
             ]);
+        })(),
+
+        'object' => (function () use ($connection) {
+            return json_encode($_FILES);
         })()
     };
 
