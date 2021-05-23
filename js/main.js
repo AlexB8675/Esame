@@ -1,4 +1,30 @@
 $(function () {
+    const enable_hiding = () => {
+        $('.back-layer')
+            .delay(200)
+            .queue(function () {
+                $(this)
+                    .dequeue()
+                    .on('mousedown', function (event) {
+                        if (event.target === this) {
+                            $(this)
+                                .off('mousedown')
+                                .css({
+                                    'opacity': ''
+                                })
+                                .delay(250)
+                                .queue(function () {
+                                    $(this)
+                                        .dequeue()
+                                        .removeAttr('style')
+                                        .children('.category-insert, .object-insert')
+                                        .removeAttr('style');
+                                });
+                        }
+                    });
+            });
+    };
+
     const category_handler = function (ctg) {
         if ($(ctg).attr('aria-label') !== 'active') {
             fetch({
@@ -42,32 +68,6 @@ $(function () {
                 })
                 .attr('aria-label', 'active');
         }
-    };
-
-    const enable_hiding = () => {
-        $('.back-layer')
-            .delay(200)
-            .queue(function () {
-                $(this)
-                    .dequeue()
-                    .on('mousedown', function (event) {
-                        if (event.target === this) {
-                            $(this)
-                                .off('mousedown')
-                                .css({
-                                    'opacity': ''
-                                })
-                                .delay(250)
-                                .queue(function () {
-                                    $(this)
-                                        .dequeue()
-                                        .removeAttr('style')
-                                        .children('.category-insert, .object-insert')
-                                        .removeAttr('style');
-                                });
-                        }
-                    });
-            });
     };
 
     (() => { // Fetch & Set all the categories.

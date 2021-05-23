@@ -88,11 +88,59 @@ div *::-webkit-scrollbar-thumb {
         visibility: hidden;
         border-radius: 8px;
         transition: height 250ms;
+        padding: 32px 8px;
 
         .media {
             flex: 1 0 auto;
             flex-direction: column;
-            padding: 8px;
+            justify-content: center;
+            align-items: center;
+
+            .image {
+                flex: 0 0 auto;
+                height: 256px;
+                width: 256px;
+                margin: 16px;
+                background:
+                    rgb(64, 68, 75)
+                    no-repeat
+                    center
+                    center;
+                box-shadow: 0 0 0 rgb(56, 62, 64);
+                border: 3px solid rgb(36, 36, 36);
+                padding: 8px;
+                border-radius: 8px;
+                font-size: 64pt;
+                color: black;
+                align-items: center;
+                justify-content: center;
+                transition:
+                    box-shadow 250ms linear,
+                    font-size  250ms linear,
+                    color      250ms linear;
+
+                &:hover {
+                    font-size: 80pt;
+                    cursor: pointer;
+                    color: rgb(88, 101, 242);
+                    box-shadow: 0 0 6px 3px rgb(26, 25, 25);
+                }
+            }
+
+            .audio {
+                flex: 0 1 auto;
+                margin: 12px auto;
+                padding: 8px 18px;
+                font-size: 15pt;
+                color: white;
+                border: 1px solid rgb(108, 108, 109);
+                border-radius: 8px;
+
+                &:hover {
+                    cursor: pointer;
+                    background: rgb(58, 62, 68);
+                }
+            }
         }
 
         .main {
@@ -100,7 +148,6 @@ div *::-webkit-scrollbar-thumb {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 32px 8px;
 
             .header {
                 flex: 0 0 auto;
@@ -129,17 +176,20 @@ div *::-webkit-scrollbar-thumb {
                     outline: none;
                     color: white;
                     border: 1px solid rgb(108, 108, 109);
-                    margin: 16px 32px;
+                    margin: 8px 32px;
+
+                    &:empty:not(:focus)::before {
+                        content: attr(data-placeholder);
+                    }
                 }
 
                 .confirm {
                     margin: 12px auto;
                     padding: 8px 18px;
-                    width: fit-content;
                     font-size: 15pt;
                     flex: 0 1 auto;
-                    color: rgb(220, 221, 222);
-                    border: 1px solid rgb(66, 69, 74);
+                    color: white;
+                    border: 1px solid rgb(108, 108, 109);
                     border-radius: 8px;
 
                     &:hover {
