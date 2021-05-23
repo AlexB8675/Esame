@@ -146,6 +146,13 @@ div *::-webkit-scrollbar-thumb {
                     background: rgb(58, 62, 68);
                 }
             }
+
+            .audio-name {
+                flex: 0 1 auto;
+                padding: 2px;
+                font-size: 13pt;
+                color: white;
+            }
         }
 
         .main {
@@ -283,6 +290,7 @@ div *::-webkit-scrollbar-thumb {
     .content {
         padding: 24px 0;
         background: rgb(54, 57, 63);
+        justify-content: center;
         overflow: hidden auto;
 
         .items {

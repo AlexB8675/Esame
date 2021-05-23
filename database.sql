@@ -12,7 +12,7 @@ create table Oggetti (
     def_it         varchar(32)  not null,
     def_eng        varchar(32)  not null,
     vocale         varchar(256) not null,
-    percorso       varchar(256) not null,
+    immagine       varchar(256) not null,
 
     primary key (id_oggetto),
     foreign key (e_id_categoria)

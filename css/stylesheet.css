@@ -127,6 +127,12 @@ div *::-webkit-scrollbar-thumb {
   cursor: pointer;
   background: #3a3e44;
 }
+.back-layer .category-insert .media .audio-name, .back-layer .object-insert .media .audio-name {
+  flex: 0 1 auto;
+  padding: 2px;
+  font-size: 13pt;
+  color: white;
+}
 .back-layer .category-insert .main, .back-layer .object-insert .main {
   flex: 1 1 auto;
   flex-direction: column;
@@ -245,6 +251,7 @@ div *::-webkit-scrollbar-thumb {
 .main-mount .content {
   padding: 24px 0;
   background: #36393f;
+  justify-content: center;
   overflow: hidden auto;
 }
 .main-mount .content .items {

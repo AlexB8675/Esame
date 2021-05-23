@@ -25,21 +25,24 @@ $(function () {
             });
     };
 
-    const category_handler = function (ctg) {
+    const object_handler = (obj) => {
+        // TODO: Behaviour:
+    };
+
+    const category_handler = (ctg) => {
         if ($(ctg).attr('aria-label') !== 'active') {
+            const category = +$(ctg).data('id');
             fetch({
                 kind: 'objects',
-                categoria: $(ctg).data('id')
+                categoria: category
             }, (response) => {
                 const items = $('#obj-items').html('');
                 for (const each of response) {
                     items.append(
                         $('<div class="item">')
-                            .css({
-                                'background': `url("${each['percorso']}") rgb(64, 68, 75) no-repeat center center`
-                            })
+                            .append(`<img src="${each['immagine']}" alt>`)
                             .on('click', function () {
-                                // TODO: Behaviour.
+                                object_handler(this);
                             }));
                 }
                 items.append(
@@ -112,12 +115,18 @@ $(function () {
                         audio = event.target.files[0];
                         if (!['audio/mpeg', 'audio/ogg'].includes(audio['type'])) {
                             alert('Il file caricato non è un file audio.');
+                        } else {
+                            $('#obj-audio-name').html(audio.name);
                         }
                     })
                     .trigger('click');
             });
         $('#obj-submit')
             .on('click', function () {
+                const category =
+                    $('#ctg-items')
+                        .children('div[aria-label="active"]')
+                        .data('id');
                 const nome = $('#obj-input-nome').text().trim();
                 const ita  = $('#obj-input-ita').text().trim();
                 const eng  = $('#obj-input-eng').text().trim();
@@ -131,18 +140,29 @@ $(function () {
                     alert('Inserire la definizione in italiano');
                 } else if (eng.length === 0) {
                     alert('Inserire la definizione in inglese');
+                } else {
+                    let data = new FormData();
+                    data.append('kind', 'object');
+                    data.append('categoria', category);
+                    data.append('immagine', image);
+                    data.append('audio', audio);
+                    data.append('nome', nome);
+                    data.append('ita', ita);
+                    data.append('eng', eng);
+                    insert(data, (response) => {
+                        image = audio = null;
+                        $('#obj-input-eng, #obj-input-ita, #obj-input-nome, #obj-audio-name').html('');
+                        $('#obj-input-image').html('&plus;');
+                        $('.back-layer').trigger('mousedown');
+                        $('#obj-insert')
+                            .before(
+                                $('<div class="item">')
+                                    .append(`<img src="${response['immagine']}" alt>`)
+                                    .on('click', function () {
+                                        object_handler(this);
+                                    }));
+                    });
                 }
-
-                let data = new FormData();
-                data.append('kind', 'object');
-                data.append('image', image);
-                data.append('audio', audio);
-                data.append('nome', nome);
-                data.append('ita', ita);
-                data.append('eng', eng);
-                insert(data, (response) => {
-                    console.log(response);
-                });
             });
     })();
 
