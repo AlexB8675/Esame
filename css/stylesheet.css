@@ -162,9 +162,14 @@ div *::-webkit-scrollbar-thumb {
   width: 320px;
   padding: 8px 16px;
   outline: none;
+  overflow: auto hidden;
   color: white;
   border: 1px solid #6c6c6d;
   margin: 8px 32px;
+}
+.back-layer .category-insert .main .body .input::-webkit-scrollbar, .back-layer .object-insert .main .body .input::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 .back-layer .category-insert .main .body .input:empty:not(:focus)::before, .back-layer .object-insert .main .body .input:empty:not(:focus)::before {
   content: attr(data-placeholder);
@@ -198,16 +203,15 @@ div *::-webkit-scrollbar-thumb {
 }
 .main-mount .sidebar .item {
   color: white;
-  width: 100%;
   flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  padding: 8px 0;
+  padding: 8px 6px;
   margin: 2px 0;
   font-size: 16pt;
   text-overflow: ellipsis;
 }
-.main-mount .sidebar .item:hover {
+.main-mount .sidebar .item:hover, .main-mount .sidebar .item[aria-label=active] {
   cursor: pointer;
   background: #32353b;
 }
@@ -215,12 +219,12 @@ div *::-webkit-scrollbar-thumb {
   flex: 1 0 auto;
   flex-direction: column;
   overflow: visible;
-  padding: 8px 6px;
+  padding: 8px 0;
 }
 .main-mount .sidebar .scroller .search {
   flex: 0 1 auto;
   height: 32px;
-  margin: 8px 6px;
+  margin: 8px 12px;
   padding: 4px 6px;
   border-radius: 6px;
   flex-direction: row;
@@ -245,24 +249,45 @@ div *::-webkit-scrollbar-thumb {
 .main-mount .sidebar .footer {
   flex: 0 1 auto;
   flex-direction: column;
-  align-items: center;
-  padding: 8px 6px;
+  padding: 8px 0;
 }
-.main-mount .content {
-  padding: 24px 0;
+.main-mount .main-container {
+  flex: 1 1 auto;
+  flex-direction: column;
   background: #36393f;
-  justify-content: center;
+}
+.main-mount .main-container .header {
+  flex: 0 0 auto;
+  height: 70px;
+  padding: 0 16px;
+  box-shadow: 0 4px 2px -2px rgba(29, 32, 33, 0.67);
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.main-mount .main-container .header .item {
+  flex: 0 1 auto;
+  padding: 8px;
+  font-size: 14pt;
+  align-items: center;
+  color: white;
+}
+.main-mount .main-container .header .item:hover {
+  background: #32353b;
+  cursor: pointer;
+}
+.main-mount .main-container .content {
+  padding: 0 0 24px;
+  flex-direction: column;
   overflow: hidden auto;
 }
-.main-mount .content .items {
+.main-mount .main-container .content .items {
   flex: 0 1 auto;
-  overflow: visible;
   flex-flow: row wrap;
   justify-content: center;
-  height: fit-content;
+  overflow: visible;
   padding: 24px;
 }
-.main-mount .content .items .item {
+.main-mount .main-container .content .items .item {
   flex: 0 0 auto;
   height: 256px;
   width: 256px;
@@ -274,22 +299,22 @@ div *::-webkit-scrollbar-thumb {
   border-radius: 8px;
   transition: box-shadow 250ms linear;
 }
-.main-mount .content .items .item:hover {
+.main-mount .main-container .content .items .item:hover {
   box-shadow: 0 0 6px 3px #1a1919;
   cursor: pointer;
 }
-.main-mount .content .items .item:last-child {
+.main-mount .main-container .content .items .item[id=obj-insert] {
   font-size: 64pt;
   color: black;
   align-items: center;
   justify-content: center;
   transition: box-shadow 250ms linear, font-size 250ms linear, color 250ms linear;
 }
-.main-mount .content .items .item:last-child:hover {
+.main-mount .main-container .content .items .item[id=obj-insert]:hover {
   font-size: 80pt;
   color: #5865f2;
 }
-.main-mount .content .items .item > img {
+.main-mount .main-container .content .items .item > img {
   width: 256px;
   height: 256px;
 }

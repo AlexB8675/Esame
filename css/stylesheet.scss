@@ -186,9 +186,15 @@ div *::-webkit-scrollbar-thumb {
                     width: 320px;
                     padding: 8px 16px;
                     outline: none;
+                    overflow: auto hidden;
                     color: white;
                     border: 1px solid rgb(108, 108, 109);
                     margin: 8px 32px;
+
+                    &::-webkit-scrollbar {
+                        width: 0;
+                        height: 0;
+                    }
 
                     &:empty:not(:focus)::before {
                         content: attr(data-placeholder);
@@ -229,16 +235,15 @@ div *::-webkit-scrollbar-thumb {
 
         .item {
             color: white;
-            width: 100%;
             flex: 0 0 auto;
             flex-direction: column;
             align-items: center;
-            padding: 8px 0;
+            padding: 8px 6px;
             margin: 2px 0;
             font-size: 16pt;
             text-overflow: ellipsis;
 
-            &:hover {
+            &:hover, &[aria-label="active"] {
                 cursor: pointer;
                 background: rgb(50, 53, 59);
             }
@@ -248,12 +253,12 @@ div *::-webkit-scrollbar-thumb {
             flex: 1 0 auto;
             flex-direction: column;
             overflow: visible;
-            padding: 8px 6px;
+            padding: 8px 0;
 
             .search {
                 flex: 0 1 auto;
                 height: 32px;
-                margin: 8px 6px;
+                margin: 8px 12px;
                 padding: 4px 6px;
                 border-radius: 6px;
                 flex-direction: row;
@@ -283,64 +288,90 @@ div *::-webkit-scrollbar-thumb {
         .footer {
             flex: 0 1 auto;
             flex-direction: column;
-            align-items: center;
-            padding: 8px 6px;
+            padding: 8px 0;
         }
     }
-    .content {
-        padding: 24px 0;
-        background: rgb(54, 57, 63);
-        justify-content: center;
-        overflow: hidden auto;
 
-        .items {
-            flex: 0 1 auto;
-            overflow: visible;
-            flex-flow: row wrap;
-            justify-content: center;
-            height: fit-content;
-            padding: 24px;
+    .main-container {
+        flex: 1 1 auto;
+        flex-direction: column;
+        background: rgb(54, 57, 63);
+
+        .header {
+            flex: 0 0 auto;
+            height: 70px;
+            padding: 0 16px;
+            box-shadow: 0 4px 2px -2px rgba(29, 32, 33, 0.67);
+            flex-direction: row;
+            justify-content: flex-end;
 
             .item {
-                flex: 0 0 auto;
-                height: 256px;
-                width: 256px;
-                margin: 16px;
-                background:
-                    rgb(64, 68, 75)
-                    no-repeat
-                    center
-                    center;
-                box-shadow: 0 0 0 rgb(56, 62, 64);
-                border: 3px solid rgb(36, 36, 36);
+                flex: 0 1 auto;
                 padding: 8px;
-                border-radius: 8px;
-                transition: box-shadow 250ms linear;
+                font-size: 14pt;
+                align-items: center;
+                color: white;
 
                 &:hover {
-                    box-shadow: 0 0 6px 3px rgb(26, 25, 25);
+                    background: rgb(50, 53, 59);
                     cursor: pointer;
                 }
+            }
+        }
 
-                &:last-child {
-                    font-size: 64pt;
-                    color: black;
-                    align-items: center;
-                    justify-content: center;
-                    transition:
-                        box-shadow 250ms linear,
-                        font-size  250ms linear,
-                        color      250ms linear;
-                }
+        .content {
+            padding: 0 0 24px;
+            flex-direction: column;
+            overflow: hidden auto;
 
-                &:last-child:hover {
-                    font-size: 80pt;
-                    color: rgb(88, 101, 242);
-                }
+            .items {
+                flex: 0 1 auto;
+                flex-flow: row wrap;
+                justify-content: center;
+                overflow: visible;
+                padding: 24px;
 
-                & > img {
-                    width: 256px;
+                .item {
+                    flex: 0 0 auto;
                     height: 256px;
+                    width: 256px;
+                    margin: 16px;
+                    background:
+                            rgb(64, 68, 75)
+                            no-repeat
+                            center
+                            center;
+                    box-shadow: 0 0 0 rgb(56, 62, 64);
+                    border: 3px solid rgb(36, 36, 36);
+                    padding: 8px;
+                    border-radius: 8px;
+                    transition: box-shadow 250ms linear;
+
+                    &:hover {
+                        box-shadow: 0 0 6px 3px rgb(26, 25, 25);
+                        cursor: pointer;
+                    }
+
+                    &[id="obj-insert"] {
+                        font-size: 64pt;
+                        color: black;
+                        align-items: center;
+                        justify-content: center;
+                        transition:
+                                box-shadow 250ms linear,
+                                font-size  250ms linear,
+                                color      250ms linear;
+                    }
+
+                    &[id="obj-insert"]:hover {
+                        font-size: 80pt;
+                        color: rgb(88, 101, 242);
+                    }
+
+                    & > img {
+                        width: 256px;
+                        height: 256px;
+                    }
                 }
             }
         }

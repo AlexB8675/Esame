@@ -25,16 +25,15 @@ $(function () {
             });
     };
 
-    const object_handler = (obj) => {
+    const object_handler = (obj, data) => {
         // TODO: Behaviour:
     };
 
     const category_handler = (ctg) => {
         if ($(ctg).attr('aria-label') !== 'active') {
-            const category = +$(ctg).data('id');
             fetch({
                 kind: 'objects',
-                categoria: category
+                categoria: $(ctg).data('id')
             }, (response) => {
                 const items = $('#obj-items').html('');
                 for (const each of response) {
@@ -42,34 +41,30 @@ $(function () {
                         $('<div class="item">')
                             .append(`<img src="${each['immagine']}" alt>`)
                             .on('click', function () {
-                                object_handler(this);
+                                object_handler(this, each);
                             }));
                 }
-                items.append(
-                    $('<div class="item" id="obj-insert">')
-                        .html('&plus;')
-                        .on('click', function () {
-                            $('.back-layer')
-                                .css({
-                                    'z-index': '1',
-                                    'opacity': '1'
-                                })
-                                .children('.object-insert')
-                                .css({
-                                    'height': 'fit-content',
-                                    'visibility': 'visible'
-                                });
-                            enable_hiding();
-                        }));
+                if ($(ctg).data('id') !== -1) {
+                    items.append(
+                        $('<div class="item" id="obj-insert">')
+                            .html('&plus;')
+                            .on('click', function () {
+                                $('.back-layer')
+                                    .css({
+                                        'z-index': '1',
+                                        'opacity': '1'
+                                    })
+                                    .children('.object-insert')
+                                    .css({
+                                        'height': 'fit-content',
+                                        'visibility': 'visible'
+                                    });
+                                enable_hiding();
+                            }));
+                }
             });
-            $('#ctg-items div[class="item"]')
-                .attr('aria-label', '')
-                .removeAttr('style')
-                .filter(ctg)
-                .css({
-                    'background': 'rgb(50, 53, 59)'
-                })
-                .attr('aria-label', 'active');
+            $('#ctg-items div[class="item"]').attr('aria-label', '');
+            $(ctg).attr('aria-label', 'active');
         }
     };
 
@@ -84,7 +79,9 @@ $(function () {
             $('#ctg-items div[class="item"]')
                 .on('click', function () {
                     category_handler(this);
-                });
+                })
+                .first()
+                .trigger('click');
         });
     })();
 
@@ -151,7 +148,8 @@ $(function () {
                     data.append('eng', eng);
                     insert(data, (response) => {
                         image = audio = null;
-                        $('#obj-input-eng, #obj-input-ita, #obj-input-nome, #obj-audio-name').html('');
+                        $('#obj-input-eng, #obj-input-ita, #obj-input-nome').html('');
+                        $('#obj-audio-name').html('Nessun file audio selezionato');
                         $('#obj-input-image').html('&plus;');
                         $('.back-layer').trigger('mousedown');
                         $('#obj-insert')
@@ -159,7 +157,7 @@ $(function () {
                                 $('<div class="item">')
                                     .append(`<img src="${response['immagine']}" alt>`)
                                     .on('click', function () {
-                                        object_handler(this);
+                                        object_handler(this, response);
                                     }));
                     });
                 }
@@ -175,7 +173,7 @@ $(function () {
             if (search.text() === '') {
                 $('#ctg-items div[class="item"]').show();
             } else {
-                $('#ctg-items div[class="item"]')
+                $('#ctg-items div[class="item"][data-id!="-1"]')
                     .hide()
                     .each(function () {
                         const criteria = search.text().toLowerCase();
@@ -274,13 +272,11 @@ const fetch = (function () {
 })();
 
 function insert(data, callback) {
-    $.ajax({
+    let settings = {
         url: 'php/insert.php',
         type: 'POST',
         data: data,
         dataType: 'json',
-        processData: false,
-        contentType: false,
         cache: false,
         success: (response) => {
             if ('error' in response) {
@@ -289,5 +285,10 @@ function insert(data, callback) {
                 callback(response);
             }
         }
-    });
+    };
+    if (data.constructor === FormData) {
+        settings['processData'] = false;
+        settings['contentType'] = false;
+    }
+    $.ajax(settings);
 }

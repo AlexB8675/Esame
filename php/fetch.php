@@ -17,9 +17,16 @@
         })(),
 
         'objects' => (function () use ($connection) {
-            $query    = "select * from Oggetti where e_id_categoria = ?";
-            $category = $_GET['categoria'];
-            $result   = safe_query($connection, $query, $category);
+            $category = intval($_GET['categoria']);
+            $query    = "select * from Oggetti ";
+            if ($category !== -1) {
+                $query .= "where e_id_categoria = ?";
+            }
+
+            $result =
+                $category === -1 ?
+                    safe_query($connection, $query) :
+                    safe_query($connection, $query, $category);
             if (!$result) {
                 die(json_encode([
                     'message' => 'object_fetch',
