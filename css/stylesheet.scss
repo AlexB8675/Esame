@@ -74,10 +74,10 @@ div *::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.66);
     transition: opacity 250ms;
 
-    .category-insert, .object-insert {
+    .category-insert, .object-insert, .object-viewer {
         position: absolute;
+        height: fit-content;
         width: fit-content;
-        height: 100px;
         flex: 0 0 auto;
         inset: 0;
         margin: auto;
@@ -87,7 +87,6 @@ div *::-webkit-scrollbar-thumb {
         flex-direction: row;
         visibility: hidden;
         border-radius: 8px;
-        transition: height 250ms;
         padding: 32px 8px;
 
         .media {
@@ -101,11 +100,7 @@ div *::-webkit-scrollbar-thumb {
                 height: 256px;
                 width: 256px;
                 margin: 16px;
-                background:
-                    rgb(64, 68, 75)
-                    no-repeat
-                    center
-                    center;
+                background: rgb(64, 68, 75);
                 box-shadow: 0 0 0 rgb(56, 62, 64);
                 border: 3px solid rgb(36, 36, 36);
                 padding: 8px;
@@ -179,13 +174,14 @@ div *::-webkit-scrollbar-thumb {
                 width: 100%;
                 flex-direction: column;
 
-                .input {
+                .input, .info {
                     flex: 0 1 auto;
                     font-size: 16pt;
                     border-radius: 8px;
                     width: 320px;
                     padding: 8px 16px;
                     outline: none;
+                    overflow-wrap: anywhere;
                     overflow: auto hidden;
                     color: white;
                     border: 1px solid rgb(108, 108, 109);
@@ -336,11 +332,7 @@ div *::-webkit-scrollbar-thumb {
                     height: 256px;
                     width: 256px;
                     margin: 16px;
-                    background:
-                            rgb(64, 68, 75)
-                            no-repeat
-                            center
-                            center;
+                    background: rgb(64, 68, 75);
                     box-shadow: 0 0 0 rgb(56, 62, 64);
                     border: 3px solid rgb(36, 36, 36);
                     padding: 8px;
@@ -358,9 +350,9 @@ div *::-webkit-scrollbar-thumb {
                         align-items: center;
                         justify-content: center;
                         transition:
-                                box-shadow 250ms linear,
-                                font-size  250ms linear,
-                                color      250ms linear;
+                            box-shadow 250ms linear,
+                            font-size  250ms linear,
+                            color      250ms linear;
                     }
 
                     &[id="obj-insert"]:hover {

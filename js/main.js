@@ -1,5 +1,5 @@
 $(function () {
-    const enable_hiding = () => {
+    const install_backlayer_hide = (pred) => {
         $('.back-layer')
             .delay(200)
             .queue(function () {
@@ -17,16 +17,38 @@ $(function () {
                                     $(this)
                                         .dequeue()
                                         .removeAttr('style')
-                                        .children('.category-insert, .object-insert')
+                                        .children('.category-insert, .object-insert, .object-viewer')
                                         .removeAttr('style');
                                 });
+                            if (pred) {
+                                pred();
+                            }
                         }
                     });
             });
     };
 
-    const object_handler = (obj, data) => {
-        // TODO: Behaviour:
+    const object_handler = (obj) => {
+        $('.back-layer')
+            .css({
+                'z-index': '1',
+                'opacity': '1'
+            })
+            .children('.object-viewer')
+            .css({
+                'visibility': 'visible'
+            });
+        $('#obj-view-image').html(`<img src="${obj['immagine']}" alt>`);
+        $('#obj-view-audio').html(`<source src="${obj['vocale']}" type="audio/mpeg">`);
+        $('#obj-view-name').html(obj['nome']);
+        $('#obj-view-ita').html(obj['def_it']);
+        $('#obj-view-eng').html(obj['def_eng']);
+        install_backlayer_hide(() => {
+            const player = $('#obj-view-audio')[0];
+            player.pause();
+            player.currentTime = 0;
+            $('.object-viewer [id^="obj-view"]').html('');
+        });
     };
 
     const category_handler = (ctg) => {
@@ -41,7 +63,7 @@ $(function () {
                         $('<div class="item">')
                             .append(`<img src="${each['immagine']}" alt>`)
                             .on('click', function () {
-                                object_handler(this, each);
+                                object_handler(each);
                             }));
                 }
                 if ($(ctg).data('id') !== -1) {
@@ -56,10 +78,9 @@ $(function () {
                                     })
                                     .children('.object-insert')
                                     .css({
-                                        'height': 'fit-content',
                                         'visibility': 'visible'
                                     });
-                                enable_hiding();
+                                install_backlayer_hide();
                             }));
                 }
             });
@@ -124,14 +145,14 @@ $(function () {
                     $('#ctg-items')
                         .children('div[aria-label="active"]')
                         .data('id');
-                const nome = $('#obj-input-nome').text().trim();
+                const name = $('#obj-input-name').text().trim();
                 const ita  = $('#obj-input-ita').text().trim();
                 const eng  = $('#obj-input-eng').text().trim();
                 if (image === null) {
                     alert('Inserire un immagine.');
                 } else if (audio === null) {
                     alert('Inserire un file audio.');
-                } else if (nome.length === 0) {
+                } else if (name.length === 0) {
                     alert('Inserire il nome dell\'oggetto');
                 } else if (ita.length === 0) {
                     alert('Inserire la definizione in italiano');
@@ -143,12 +164,12 @@ $(function () {
                     data.append('categoria', category);
                     data.append('immagine', image);
                     data.append('audio', audio);
-                    data.append('nome', nome);
+                    data.append('nome', name);
                     data.append('ita', ita);
                     data.append('eng', eng);
                     insert(data, (response) => {
                         image = audio = null;
-                        $('#obj-input-eng, #obj-input-ita, #obj-input-nome').html('');
+                        $('#obj-input-eng, #obj-input-ita, #obj-input-name').html('');
                         $('#obj-audio-name').html('Nessun file audio selezionato');
                         $('#obj-input-image').html('&plus;');
                         $('.back-layer').trigger('mousedown');
@@ -193,10 +214,9 @@ $(function () {
                 })
                 .children('.category-insert')
                 .css({
-                    'height': 'fit-content',
                     'visibility': 'visible'
                 });
-            enable_hiding();
+            install_backlayer_hide();
         });
     $('#ctg-input')
         .on('keyup', function (event) {
