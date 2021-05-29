@@ -40,16 +40,42 @@
             </div>
             <div class="object-viewer">
                 <div class="media">
-                    <div class="image" data-placeholder="" id="obj-view-image"></div>
+                    <div class="image" id="obj-view-image"></div>
                     <audio id="obj-view-audio" controls></audio>
                 </div>
                 <div class="main">
                     <div class="header">
-                        <div class="text" data-placeholder="" id="obj-view-name"></div>
+                        <div class="text" id="obj-view-name"></div>
                     </div>
                     <div class="body">
-                        <div class="info" data-placeholder="" id="obj-view-ita"></div>
-                        <div class="info" data-placeholder="" id="obj-view-eng"></div>
+                        <div class="info" id="obj-view-ita"></div>
+                        <div class="info" id="obj-view-eng"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="signin-form">
+                <div class="main">
+                    <div class="header">
+                        <div class="text">Accedi</div>
+                    </div>
+                    <div class="body">
+                        <div class="error" id="signin-error"></div>
+                        <input type="text" class="input" id="signin-username" placeholder="Username">
+                        <input type="password" class="input" id="signin-password" placeholder="Password">
+                        <div class="confirm" id="signin-submit">Conferma</div>
+                    </div>
+                </div>
+            </div>
+            <div class="signup-form">
+                <div class="main">
+                    <div class="header">
+                        <div class="text">Registrati</div>
+                    </div>
+                    <div class="body">
+                        <div class="error" id="signup-error"></div>
+                        <input type="text" class="input" id="signup-username" placeholder="Username">
+                        <input type="password" class="input" id="signup-password" placeholder="Password">
+                        <div class="confirm" id="signup-submit">Conferma</div>
                     </div>
                 </div>
             </div>
@@ -71,8 +97,8 @@
             </div>
             <div class="main-container">
                 <div class="header">
-                    <div class="item">Accedi</div>
-                    <div class="item">Registrati</div>
+                    <div class="item" id="signin">Accedi</div>
+                    <div class="item" id="signup">Registrati</div>
                 </div>
                 <div class="content">
                     <div class="items" id="obj-items"></div>

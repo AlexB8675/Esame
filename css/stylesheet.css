@@ -66,7 +66,7 @@ div *::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.66);
   transition: opacity 250ms;
 }
-.back-layer .category-insert, .back-layer .object-insert, .back-layer .object-viewer {
+.back-layer .category-insert, .back-layer .object-insert, .back-layer .object-viewer, .back-layer .signin-form, .back-layer .signup-form {
   position: absolute;
   height: fit-content;
   width: fit-content;
@@ -81,13 +81,13 @@ div *::-webkit-scrollbar-thumb {
   border-radius: 8px;
   padding: 32px 8px;
 }
-.back-layer .category-insert .media, .back-layer .object-insert .media, .back-layer .object-viewer .media {
+.back-layer .category-insert .media, .back-layer .object-insert .media, .back-layer .object-viewer .media, .back-layer .signin-form .media, .back-layer .signup-form .media {
   flex: 1 0 auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.back-layer .category-insert .media .image, .back-layer .object-insert .media .image, .back-layer .object-viewer .media .image {
+.back-layer .category-insert .media .image, .back-layer .object-insert .media .image, .back-layer .object-viewer .media .image, .back-layer .signin-form .media .image, .back-layer .signup-form .media .image {
   flex: 0 0 auto;
   height: 256px;
   width: 256px;
@@ -103,17 +103,17 @@ div *::-webkit-scrollbar-thumb {
   justify-content: center;
   transition: box-shadow 250ms linear, font-size 250ms linear, color 250ms linear;
 }
-.back-layer .category-insert .media .image > img, .back-layer .object-insert .media .image > img, .back-layer .object-viewer .media .image > img {
+.back-layer .category-insert .media .image > img, .back-layer .object-insert .media .image > img, .back-layer .object-viewer .media .image > img, .back-layer .signin-form .media .image > img, .back-layer .signup-form .media .image > img {
   width: 256px;
   height: 256px;
 }
-.back-layer .category-insert .media .image:hover, .back-layer .object-insert .media .image:hover, .back-layer .object-viewer .media .image:hover {
+.back-layer .category-insert .media .image:hover, .back-layer .object-insert .media .image:hover, .back-layer .object-viewer .media .image:hover, .back-layer .signin-form .media .image:hover, .back-layer .signup-form .media .image:hover {
   font-size: 80pt;
   cursor: pointer;
   color: #5865f2;
   box-shadow: 0 0 6px 3px #1a1919;
 }
-.back-layer .category-insert .media .audio, .back-layer .object-insert .media .audio, .back-layer .object-viewer .media .audio {
+.back-layer .category-insert .media .audio, .back-layer .object-insert .media .audio, .back-layer .object-viewer .media .audio, .back-layer .signin-form .media .audio, .back-layer .signup-form .media .audio {
   flex: 0 1 auto;
   margin: 12px auto;
   padding: 8px 18px;
@@ -122,39 +122,39 @@ div *::-webkit-scrollbar-thumb {
   border: 1px solid #6c6c6d;
   border-radius: 8px;
 }
-.back-layer .category-insert .media .audio:hover, .back-layer .object-insert .media .audio:hover, .back-layer .object-viewer .media .audio:hover {
+.back-layer .category-insert .media .audio:hover, .back-layer .object-insert .media .audio:hover, .back-layer .object-viewer .media .audio:hover, .back-layer .signin-form .media .audio:hover, .back-layer .signup-form .media .audio:hover {
   cursor: pointer;
   background: #3a3e44;
 }
-.back-layer .category-insert .media .audio-name, .back-layer .object-insert .media .audio-name, .back-layer .object-viewer .media .audio-name {
+.back-layer .category-insert .media .audio-name, .back-layer .object-insert .media .audio-name, .back-layer .object-viewer .media .audio-name, .back-layer .signin-form .media .audio-name, .back-layer .signup-form .media .audio-name {
   flex: 0 1 auto;
   padding: 2px;
   font-size: 13pt;
   color: white;
 }
-.back-layer .category-insert .main, .back-layer .object-insert .main, .back-layer .object-viewer .main {
+.back-layer .category-insert .main, .back-layer .object-insert .main, .back-layer .object-viewer .main, .back-layer .signin-form .main, .back-layer .signup-form .main {
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.back-layer .category-insert .main .header, .back-layer .object-insert .main .header, .back-layer .object-viewer .main .header {
+.back-layer .category-insert .main .header, .back-layer .object-insert .main .header, .back-layer .object-viewer .main .header, .back-layer .signin-form .main .header, .back-layer .signup-form .main .header {
   flex: 0 0 auto;
   width: 100%;
 }
-.back-layer .category-insert .main .header .text, .back-layer .object-insert .main .header .text, .back-layer .object-viewer .main .header .text {
+.back-layer .category-insert .main .header .text, .back-layer .object-insert .main .header .text, .back-layer .object-viewer .main .header .text, .back-layer .signin-form .main .header .text, .back-layer .signup-form .main .header .text {
   flex: 1 0 auto;
   font-size: 20pt;
   justify-content: center;
   padding: 24px 0;
   color: white;
 }
-.back-layer .category-insert .main .body, .back-layer .object-insert .main .body, .back-layer .object-viewer .main .body {
+.back-layer .category-insert .main .body, .back-layer .object-insert .main .body, .back-layer .object-viewer .main .body, .back-layer .signin-form .main .body, .back-layer .signup-form .main .body {
   flex: 0 0 auto;
   width: 100%;
   flex-direction: column;
 }
-.back-layer .category-insert .main .body .input, .back-layer .category-insert .main .body .info, .back-layer .object-insert .main .body .input, .back-layer .object-insert .main .body .info, .back-layer .object-viewer .main .body .input, .back-layer .object-viewer .main .body .info {
+.back-layer .category-insert .main .body .input, .back-layer .category-insert .main .body .info, .back-layer .object-insert .main .body .input, .back-layer .object-insert .main .body .info, .back-layer .object-viewer .main .body .input, .back-layer .object-viewer .main .body .info, .back-layer .signin-form .main .body .input, .back-layer .signin-form .main .body .info, .back-layer .signup-form .main .body .input, .back-layer .signup-form .main .body .info {
   flex: 0 1 auto;
   font-size: 16pt;
   border-radius: 8px;
@@ -164,17 +164,25 @@ div *::-webkit-scrollbar-thumb {
   overflow-wrap: anywhere;
   overflow: auto hidden;
   color: white;
+  background: transparent;
   border: 1px solid #6c6c6d;
   margin: 8px 32px;
 }
-.back-layer .category-insert .main .body .input::-webkit-scrollbar, .back-layer .category-insert .main .body .info::-webkit-scrollbar, .back-layer .object-insert .main .body .input::-webkit-scrollbar, .back-layer .object-insert .main .body .info::-webkit-scrollbar, .back-layer .object-viewer .main .body .input::-webkit-scrollbar, .back-layer .object-viewer .main .body .info::-webkit-scrollbar {
+.back-layer .category-insert .main .body .input::-webkit-scrollbar, .back-layer .category-insert .main .body .info::-webkit-scrollbar, .back-layer .object-insert .main .body .input::-webkit-scrollbar, .back-layer .object-insert .main .body .info::-webkit-scrollbar, .back-layer .object-viewer .main .body .input::-webkit-scrollbar, .back-layer .object-viewer .main .body .info::-webkit-scrollbar, .back-layer .signin-form .main .body .input::-webkit-scrollbar, .back-layer .signin-form .main .body .info::-webkit-scrollbar, .back-layer .signup-form .main .body .input::-webkit-scrollbar, .back-layer .signup-form .main .body .info::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-.back-layer .category-insert .main .body .input:empty:not(:focus)::before, .back-layer .category-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-insert .main .body .input:empty:not(:focus)::before, .back-layer .object-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-viewer .main .body .input:empty:not(:focus)::before, .back-layer .object-viewer .main .body .info:empty:not(:focus)::before {
+.back-layer .category-insert .main .body .input:empty:not(:focus)::before, .back-layer .category-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-insert .main .body .input:empty:not(:focus)::before, .back-layer .object-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-viewer .main .body .input:empty:not(:focus)::before, .back-layer .object-viewer .main .body .info:empty:not(:focus)::before, .back-layer .signin-form .main .body .input:empty:not(:focus)::before, .back-layer .signin-form .main .body .info:empty:not(:focus)::before, .back-layer .signup-form .main .body .input:empty:not(:focus)::before, .back-layer .signup-form .main .body .info:empty:not(:focus)::before {
   content: attr(data-placeholder);
 }
-.back-layer .category-insert .main .body .confirm, .back-layer .object-insert .main .body .confirm, .back-layer .object-viewer .main .body .confirm {
+.back-layer .category-insert .main .body .error, .back-layer .object-insert .main .body .error, .back-layer .object-viewer .main .body .error, .back-layer .signin-form .main .body .error, .back-layer .signup-form .main .body .error {
+  flex: 0 1 auto;
+  font-size: 12pt;
+  outline: none;
+  justify-content: center;
+  color: #e23939;
+}
+.back-layer .category-insert .main .body .confirm, .back-layer .object-insert .main .body .confirm, .back-layer .object-viewer .main .body .confirm, .back-layer .signin-form .main .body .confirm, .back-layer .signup-form .main .body .confirm {
   margin: 12px auto;
   padding: 8px 18px;
   font-size: 15pt;
@@ -183,7 +191,7 @@ div *::-webkit-scrollbar-thumb {
   border: 1px solid #6c6c6d;
   border-radius: 8px;
 }
-.back-layer .category-insert .main .body .confirm:hover, .back-layer .object-insert .main .body .confirm:hover, .back-layer .object-viewer .main .body .confirm:hover {
+.back-layer .category-insert .main .body .confirm:hover, .back-layer .object-insert .main .body .confirm:hover, .back-layer .object-viewer .main .body .confirm:hover, .back-layer .signin-form .main .body .confirm:hover, .back-layer .signup-form .main .body .confirm:hover {
   cursor: pointer;
   background: #3a3e44;
 }
@@ -312,7 +320,7 @@ div *::-webkit-scrollbar-thumb {
 }
 .main-mount .main-container .content .items .item[id=obj-insert]:hover {
   font-size: 80pt;
-  color: #5865f2;
+  color: #535353;
 }
 .main-mount .main-container .content .items .item > img {
   width: 256px;

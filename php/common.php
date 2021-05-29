@@ -54,7 +54,11 @@
         return $statement;
     }
 
-    function start_session() {
+    function json_empty(): string {
+        return '{}';
+    }
+
+    function start_session(): void {
         session_start();
         if (count($_SESSION) === 0) {
             die(json_encode([
@@ -64,7 +68,7 @@
         }
     }
 
-    function destroy_session() {
+    function destroy_session(): void {
         session_unset();
         session_destroy();
         session_write_close();

@@ -20,3 +20,28 @@ create table Oggetti (
             on delete cascade
             on update cascade
 );
+
+create table Utenti (
+    username varchar(64)  not null,
+    password varchar(256) not null,
+
+    primary key (username)
+);
+
+create table Recensioni (
+    id_recensione  int         not null auto_increment,
+    e_id_categoria int         not null,
+    e_username     varchar(64) not null,
+    testo          text        not null,
+    stelle         int         not null,
+
+    primary key (id_recensione),
+    foreign key (e_id_categoria)
+        references Categorie(id_categoria)
+            on delete cascade
+            on update cascade,
+    foreign key (e_username)
+        references Utenti(username)
+        on delete cascade
+        on update cascade
+);

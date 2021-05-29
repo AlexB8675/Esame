@@ -47,7 +47,7 @@
                 'def_it'     => $ita,
                 'def_eng'    => $eng,
                 'vocale'     => $audio,
-                 'immagine'   => $image,
+                'immagine'   => $image,
             ]);
         })()
     };

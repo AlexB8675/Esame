@@ -17,7 +17,7 @@ $(function () {
                                     $(this)
                                         .dequeue()
                                         .removeAttr('style')
-                                        .children('.category-insert, .object-insert, .object-viewer')
+                                        .children()
                                         .removeAttr('style');
                                 });
                             if (pred) {
@@ -40,14 +40,13 @@ $(function () {
             });
         $('#obj-view-image').html(`<img src="${obj['immagine']}" alt>`);
         $('#obj-view-audio').html(`<source src="${obj['vocale']}" type="audio/mpeg">`);
-        $('#obj-view-name').html(obj['nome']);
-        $('#obj-view-ita').html(obj['def_it']);
-        $('#obj-view-eng').html(obj['def_eng']);
+        $('#obj-view-name').html(`Oggetto - ${obj['nome']}`);
+        $('#obj-view-ita').html(`Definizione Italiano: ${obj['def_it']}`);
+        $('#obj-view-eng').html(`Definizione Inglese: ${obj['def_eng']}`);
         install_backlayer_hide(() => {
             const player = $('#obj-view-audio')[0];
             player.pause();
             player.currentTime = 0;
-            $('.object-viewer [id^="obj-view"]').html('');
         });
     };
 
@@ -126,6 +125,7 @@ $(function () {
                     })
                     .trigger('click');
             });
+
         $('#obj-input-audio')
             .on('click', function () {
                 $('<input type="file">')
@@ -139,6 +139,7 @@ $(function () {
                     })
                     .trigger('click');
             });
+
         $('#obj-submit')
             .on('click', function () {
                 const category =
@@ -185,6 +186,46 @@ $(function () {
             });
     })();
 
+    $('#signin')
+        .on('click', function () {
+            $('.back-layer')
+                .css({
+                    'z-index': '1',
+                    'opacity': '1'
+                })
+                .children('.signin-form')
+                .css({
+                    'visibility': 'visible'
+                });
+            install_backlayer_hide(() => {
+                setTimeout(() => {
+                    $('#signin-username').html('');
+                    $('#signin-password').html('');
+                }, 5000);
+                $('#signin-error').html('');
+            });
+        });
+
+    $('#signup')
+        .on('click', function () {
+            $('.back-layer')
+                .css({
+                    'z-index': '1',
+                    'opacity': '1'
+                })
+                .children('.signup-form')
+                .css({
+                    'visibility': 'visible'
+                });
+            install_backlayer_hide(() => {
+                setTimeout(() => {
+                    $('#signin-username').html('');
+                    $('#signin-password').html('');
+                }, 5000);
+                $('#signin-error').html('');
+            });
+        });
+
     $('#ctg-search')
         .on('keyup', function (event) {
             const search = $(this);
@@ -205,6 +246,7 @@ $(function () {
                     });
             }
         });
+
     $('#ctg-insert')
         .on('click', function () {
             $('.back-layer')
@@ -218,6 +260,7 @@ $(function () {
                 });
             install_backlayer_hide();
         });
+
     $('#ctg-input')
         .on('keyup', function (event) {
             if (event.key === 'Enter') {
@@ -225,6 +268,7 @@ $(function () {
                 $('#ctg-submit').trigger('click');
             }
         });
+
     $('#ctg-submit')
         .on('click', function () {
             const category = $('#ctg-input').text().trim();
@@ -245,6 +289,7 @@ $(function () {
                 });
             }
         });
+
     $('#obj-input')
         .on('keyup', function (event) {
             if (event.key === 'Enter') {
@@ -252,6 +297,7 @@ $(function () {
                 $('#obj-submit').trigger('click');
             }
         });
+
     $('#obj-submit')
         .on('click', function () {
             const object = $('#obj-input').text().trim();
@@ -269,6 +315,44 @@ $(function () {
                             }));
                 });
             }
+        });
+
+    $('#signin-submit')
+        .on('click', function () {
+            const username = $('#signin-username').text().trim();
+            const password = $('#signin-password').text().trim();
+            login({
+                kind: 'signin',
+                username: username,
+                password: password
+            }, (response) => {
+                if ('error' in response) {
+                    if (response['message'] === 'unknown_user') {
+                        $('#signin-error').text('username o password errati.');
+                    }
+                } else {
+                    $('#signin-error').text('');
+                }
+            });
+        });
+
+    $('#signup-submit')
+        .on('click', function () {
+            const username = $('#signup-username').text().trim();
+            const password = $('#signup-password').text().trim();
+            login({
+                kind: 'signup',
+                username: username,
+                password: password
+            }, (response) => {
+                if ('error' in response) {
+                    if (response['message'] === 'fatal_found') {
+                        $('#signup-error').html('utente gi&agrave; registrato');
+                    }
+                } else {
+                    $('#signup-error').text('');
+                }
+            });
         });
 });
 
@@ -290,6 +374,29 @@ const fetch = (function () {
         });
     }
 })();
+
+
+const login = (function () {
+    let session = null;
+    return function (data, callback) {
+        if (session === null) {
+            $.ajax({
+                url: 'php/login.php',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                cache: true,
+                success: (response) => {
+                    callback(session = response);
+                }
+            });
+        } else {
+            callback(session);
+        }
+    };
+})();
+
+
 
 function insert(data, callback) {
     let settings = {

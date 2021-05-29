@@ -74,7 +74,7 @@ div *::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.66);
     transition: opacity 250ms;
 
-    .category-insert, .object-insert, .object-viewer {
+    .category-insert, .object-insert, .object-viewer, .signin-form, .signup-form {
         position: absolute;
         height: fit-content;
         width: fit-content;
@@ -110,9 +110,9 @@ div *::-webkit-scrollbar-thumb {
                 align-items: center;
                 justify-content: center;
                 transition:
-                    box-shadow 250ms linear,
-                    font-size  250ms linear,
-                    color      250ms linear;
+                        box-shadow 250ms linear,
+                        font-size  250ms linear,
+                        color      250ms linear;
 
                 & > img {
                     width: 256px;
@@ -184,6 +184,7 @@ div *::-webkit-scrollbar-thumb {
                     overflow-wrap: anywhere;
                     overflow: auto hidden;
                     color: white;
+                    background: transparent;
                     border: 1px solid rgb(108, 108, 109);
                     margin: 8px 32px;
 
@@ -195,6 +196,14 @@ div *::-webkit-scrollbar-thumb {
                     &:empty:not(:focus)::before {
                         content: attr(data-placeholder);
                     }
+                }
+
+                .error {
+                    flex: 0 1 auto;
+                    font-size: 12pt;
+                    outline: none;
+                    justify-content: center;
+                    color: rgb(226, 57, 57);
                 }
 
                 .confirm {
@@ -357,7 +366,7 @@ div *::-webkit-scrollbar-thumb {
 
                     &[id="obj-insert"]:hover {
                         font-size: 80pt;
-                        color: rgb(88, 101, 242);
+                        color: rgb(83, 83, 83);
                     }
 
                     & > img {
