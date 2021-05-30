@@ -115,8 +115,8 @@ div *::-webkit-scrollbar-thumb {
                         color      250ms linear;
 
                 & > img {
-                    width: 256px;
-                    height: 256px;
+                    max-width: 256px;
+                    max-height: 256px;
                 }
 
                 &:hover {
@@ -135,6 +135,7 @@ div *::-webkit-scrollbar-thumb {
                 color: white;
                 border: 1px solid rgb(108, 108, 109);
                 border-radius: 8px;
+                outline: none;
 
                 &:hover {
                     cursor: pointer;
@@ -164,7 +165,7 @@ div *::-webkit-scrollbar-thumb {
                     flex: 1 0 auto;
                     font-size: 20pt;
                     justify-content: center;
-                    padding: 24px 0;
+                    padding: 8px 0;
                     color: white;
                 }
             }
@@ -173,6 +174,7 @@ div *::-webkit-scrollbar-thumb {
                 flex: 0 0 auto;
                 width: 100%;
                 flex-direction: column;
+                justify-content: center;
 
                 .input, .info {
                     flex: 0 1 auto;
@@ -181,6 +183,7 @@ div *::-webkit-scrollbar-thumb {
                     width: 320px;
                     padding: 8px 16px;
                     outline: none;
+                    align-items: center;
                     overflow-wrap: anywhere;
                     overflow: auto hidden;
                     color: white;
@@ -195,6 +198,24 @@ div *::-webkit-scrollbar-thumb {
 
                     &:empty:not(:focus)::before {
                         content: attr(data-placeholder);
+                    }
+
+                    &[id="obj-view-star"] {
+                        font-size: 40pt;
+                        margin: 0 auto;
+                        flex-direction: row;
+                        justify-content: center;
+                        border: none;
+
+                        & > div {
+                            flex: 0 1 auto;
+                            text-shadow:
+                                    -1px -1px 0 black,
+                                     1px -1px 0 black,
+                                    -1px  1px 0 black,
+                                     1px  1px 0 black;
+                            cursor: pointer;
+                        }
                     }
                 }
 
@@ -347,6 +368,8 @@ div *::-webkit-scrollbar-thumb {
                     background: rgb(64, 68, 75);
                     box-shadow: 0 0 0 rgb(56, 62, 64);
                     border: 3px solid rgb(36, 36, 36);
+                    justify-content: center;
+                    align-items: center;
                     padding: 8px;
                     border-radius: 8px;
                     transition: box-shadow 250ms linear;
@@ -373,8 +396,8 @@ div *::-webkit-scrollbar-thumb {
                     }
 
                     & > img {
-                        width: 256px;
-                        height: 256px;
+                        max-width: 256px;
+                        max-height: 256px;
                     }
                 }
             }

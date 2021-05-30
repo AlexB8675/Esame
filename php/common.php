@@ -1,5 +1,6 @@
 <?php
     function connect_database(): mysqli {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $hostname   = 'localhost';
         $username   = 'root';
         $password   = '';

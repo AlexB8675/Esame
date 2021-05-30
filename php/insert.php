@@ -49,5 +49,17 @@
                 'vocale'     => $audio,
                 'immagine'   => $image,
             ]);
+        })(),
+
+        'rating' => (function () use ($connection) {
+            start_session();
+            $username = $_SESSION['username'];
+            $object   = intval($_POST['oggetto']);
+            $stars    = intval($_POST['stelle']);
+            $query    = "insert into Recensioni value (default, ?, ?, ?)";
+            safe_query($connection, $query, $object, $username, $stars);
+            $query    = "select avg(stelle) as recensioni from Recensioni where e_id_oggetto = ?";
+            $result   = safe_query($connection, $query, $object);
+            return json_encode($result->get_result()->fetch_object());
         })()
     };

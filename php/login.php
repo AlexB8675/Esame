@@ -22,10 +22,9 @@
                 ]);
             } else {
                 session_start();
-                $_SESSION = [
+                print json_encode($_SESSION = [
                     'username' => $username,
-                ];
-                print json_encode($_SESSION);
+                ]);
             }
         })(),
 
@@ -46,6 +45,5 @@
 
         'destroy' => (function () use ($connection) {
             destroy_session();
-            return json_empty();
         })()
     };

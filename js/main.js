@@ -28,7 +28,7 @@ $(function () {
             });
     };
 
-    const object_handler = (obj) => {
+    const object_handler = (obj, data) => {
         $('.back-layer')
             .css({
                 'z-index': '1',
@@ -38,15 +38,61 @@ $(function () {
             .css({
                 'visibility': 'visible'
             });
-        $('#obj-view-image').html(`<img src="${obj['immagine']}" alt>`);
-        $('#obj-view-audio').html(`<source src="${obj['vocale']}" type="audio/mpeg">`);
-        $('#obj-view-name').html(`Oggetto - ${obj['nome']}`);
-        $('#obj-view-ita').html(`Definizione Italiano: ${obj['def_it']}`);
-        $('#obj-view-eng').html(`Definizione Inglese: ${obj['def_eng']}`);
+        if ($('#obj-view-star').length !== 0) {
+            fetch({
+                kind: 'rating',
+                oggetto: $(obj).data('id')
+            }, (response) => {
+                const stars = $('#obj-view-star');
+                stars
+                    .children()
+                    .removeAttr('style')
+                    .filter(`:nth-child(-n + ${(response['stelle'] || 0)})`)
+                    .css({
+                        'color': 'yellow'
+                    });
+                if (!('stelle' in response)) {
+                    stars
+                        .children()
+                        .on('click', function () {
+                            $('#obj-view-star div')
+                                .siblings()
+                                .removeAttr('style')
+                                .filter($(this))
+                                .prevAll()
+                                .addBack()
+                                .css({
+                                    'color': 'yellow'
+                                });
+                            insert({
+                                kind: 'rating',
+                                oggetto: $(obj).data('id'),
+                                stelle: $(this).index() + 1
+                            }, (response) => {
+                                $('#obj-view-rating').html(`Rating: ${Number(response['recensioni']).toFixed(2) || 'Nessuna recensione'}`);
+                            });
+                        });
+                }
+            });
+            fetch({
+                kind: 'reviews',
+                oggetto: $(obj).data('id')
+            }, (response) => {
+                $('#obj-view-rating').html(`Rating: ${Number(response['recensioni']).toFixed(2) || 'Nessuna recensione'}`);
+            });
+        }
+        $('#obj-view-image').html(`<img src="${data['immagine']}" alt>`);
+        $('#obj-view-audio').html(`<source src="${data['vocale']}" type="audio/mpeg">`);
+        $('#obj-view-name').html(`Oggetto - ${data['nome']}`);
+        $('#obj-view-ita').html(`Definizione Italiano: ${data['def_it']}`);
+        $('#obj-view-eng').html(`Definizione Inglese: ${data['def_eng']}`);
         install_backlayer_hide(() => {
             const player = $('#obj-view-audio')[0];
             player.pause();
             player.currentTime = 0;
+            $('#obj-view-star')
+                .children()
+                .off('click');
         });
     };
 
@@ -59,10 +105,10 @@ $(function () {
                 const items = $('#obj-items').html('');
                 for (const each of response) {
                     items.append(
-                        $('<div class="item">')
+                        $(`<div class="item" data-id="${each['id_oggetto']}">`)
                             .append(`<img src="${each['immagine']}" alt>`)
                             .on('click', function () {
-                                object_handler(each);
+                                object_handler(this, each);
                             }));
                 }
                 login({
@@ -124,10 +170,10 @@ $(function () {
                                 'visibility': 'visible'
                             });
                         install_backlayer_hide(() => {
-                            $('#signin-username').val('');
-                            $('#signin-password').val('');
+                            $('#signup-username').val('');
+                            $('#signup-password').val('');
                         });
-                    }))
+                    }));
     };
 
     const login_handler = (response) => {
@@ -137,7 +183,7 @@ $(function () {
             }
         } else {
             $('#main-header')
-                .html(`<div class="item">Benvenuto, ${response['username']}</div>`)
+                .html(`<div class="item">${response['username']}</div>`)
                 .append(
                     $('<div class="item" id="main-logout">')
                         .html('Logout')
@@ -146,12 +192,23 @@ $(function () {
                                 kind: 'destroy'
                             }, () => {
                                 $('.footer, #obj-insert').remove();
+                                $('div[id*="-star"], div[id*="-rating"]').remove();
                                 $('#main-header')
                                     .children()
                                     .remove();
                                 insert_login_buttons();
                             });
                         }));
+            $('.object-viewer .body')
+                .append(
+                    `<div class="info" id="obj-view-rating">Rating:</div>` +
+                    `<div class="info" id="obj-view-star">` +
+                        `<div>&starf;</div>` +
+                        `<div>&starf;</div>` +
+                        `<div>&starf;</div>` +
+                        `<div>&starf;</div>` +
+                        `<div>&starf;</div>` +
+                    `</div>`);
             if (response['username'] === 'admin') {
                 $('.sidebar').append(
                     `<div class="footer">` +
@@ -284,7 +341,7 @@ $(function () {
                         $('.back-layer').trigger('mousedown');
                         $('#obj-insert')
                             .before(
-                                $('<div class="item">')
+                                $(`<div class="item" data-id="${response['id_oggetto']}">`)
                                     .append(`<img src="${response['immagine']}" alt>`)
                                     .on('click', function () {
                                         object_handler(this, response);
@@ -328,21 +385,23 @@ $(function () {
             const category = $('#ctg-input').text().trim();
             if (category.length === 0) {
                 alert('Inserisci il nome di una categoria.');
+            } else {
+                insert({
+                    kind: 'category',
+                    categoria: category
+                }, (response) => {
+                    $('#ctg-input').html('');
+                    $('.back-layer').trigger('mousedown');
+                    $('#ctg-items')
+                        .append(
+                            $(`<div class="item" data-id="${response['id']}">`)
+                                .html(response['nome'])
+                                .on('click', function () {
+                                    category_handler(this);
+                                })
+                                .trigger('click'));
+                });
             }
-            insert({
-                kind: 'category',
-                categoria: category
-            }, (response) => {
-                $('#ctg-input').html('');
-                $('.back-layer').trigger('mousedown');
-                $('#ctg-items')
-                    .append(`<div class="item" data-id="${response['id']}">${response['nome']}</div>`)
-                    .children('div[class="item"]:last-child')
-                    .on('click', function () {
-                        category_handler(this);
-                    })
-                    .trigger('click');
-            });
         });
 
     $('#obj-input')
@@ -415,7 +474,7 @@ const login = (function () {
     let session = null;
     return function (data, callback) {
         if (data['kind'] === 'destroy') {
-            session = null;
+            callback(session = null);
         }
         if (session === null || 'error' in session) {
             $.ajax({
@@ -425,7 +484,7 @@ const login = (function () {
                 dataType: 'json',
                 cache: true,
                 success: (response) => {
-                    if (response === {}) {
+                    if (data['kind'] === 'signin') {
                         session = response;
                     }
                     callback(response);

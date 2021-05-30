@@ -29,15 +29,14 @@ create table Utenti (
 );
 
 create table Recensioni (
-    id_recensione  int         not null auto_increment,
-    e_id_categoria int         not null,
-    e_username     varchar(64) not null,
-    testo          text        not null,
-    stelle         int         not null,
+    id_recensione int         not null auto_increment,
+    e_id_oggetto  int         not null,
+    e_username    varchar(64) not null,
+    stelle        int         not null,
 
     primary key (id_recensione),
-    foreign key (e_id_categoria)
-        references Categorie(id_categoria)
+    foreign key (e_id_oggetto)
+        references Oggetti(id_oggetto)
             on delete cascade
             on update cascade,
     foreign key (e_username)
