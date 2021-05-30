@@ -7,7 +7,7 @@
         if (!$connection) {
             die(json_encode([
                 'message' => 'unreachable_server',
-                'error'   => '500'
+                'error'   => 500
             ]));
         }
 
@@ -15,7 +15,7 @@
         if (!mysqli_select_db($connection, $database)) {
             die(json_encode([
                 'message' => 'unknown_database',
-                'error'   => '500'
+                'error'   => 500
             ]));
         }
 
@@ -30,7 +30,7 @@
         if (substr_count($query, '?') != count($params)) {
             die(json_encode([
                 'message' => 'argument_mismatch',
-                'error'   => '500'
+                'error'   => 500
             ]));
         }
         foreach ($params as $arg) {
@@ -41,7 +41,7 @@
                 'integer' => 'i',
                 default   => die(json_encode([
                     'message' => 'type_error',
-                    'error'   => '500'
+                    'error'   => 500
                 ]))
             };
         }
@@ -63,15 +63,15 @@
         if (count($_SESSION) === 0) {
             die(json_encode([
                 'message' => 'unauthorized',
-                'error'   => '401'
+                'error'   => 401
             ]));
         }
     }
 
     function destroy_session(): void {
+        session_start();
         session_unset();
         session_destroy();
         session_write_close();
         setcookie(session_name(), '', 0, '/');
-        session_regenerate_id(true);
     }

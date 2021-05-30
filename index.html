@@ -59,7 +59,6 @@
                         <div class="text">Accedi</div>
                     </div>
                     <div class="body">
-                        <div class="error" id="signin-error"></div>
                         <input type="text" class="input" id="signin-username" placeholder="Username">
                         <input type="password" class="input" id="signin-password" placeholder="Password">
                         <div class="confirm" id="signin-submit">Conferma</div>
@@ -72,7 +71,6 @@
                         <div class="text">Registrati</div>
                     </div>
                     <div class="body">
-                        <div class="error" id="signup-error"></div>
                         <input type="text" class="input" id="signup-username" placeholder="Username">
                         <input type="password" class="input" id="signup-password" placeholder="Password">
                         <div class="confirm" id="signup-submit">Conferma</div>
@@ -90,16 +88,9 @@
                     <div class="separator"></div>
                     <div class="item" data-id="-1">Tutte le categorie</div>
                 </div>
-                <div class="footer">
-                    <div class="separator"></div>
-                    <div class="item" id="ctg-insert">&plus; Inserisci categoria</div>
-                </div>
             </div>
             <div class="main-container">
-                <div class="header">
-                    <div class="item" id="signin">Accedi</div>
-                    <div class="item" id="signup">Registrati</div>
-                </div>
+                <div class="header" id="main-header"></div>
                 <div class="content">
                     <div class="items" id="obj-items"></div>
                 </div>

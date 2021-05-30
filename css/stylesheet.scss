@@ -198,14 +198,6 @@ div *::-webkit-scrollbar-thumb {
                     }
                 }
 
-                .error {
-                    flex: 0 1 auto;
-                    font-size: 12pt;
-                    outline: none;
-                    justify-content: center;
-                    color: rgb(226, 57, 57);
-                }
-
                 .confirm {
                     margin: 12px auto;
                     padding: 8px 18px;
@@ -316,10 +308,21 @@ div *::-webkit-scrollbar-thumb {
                 font-size: 14pt;
                 align-items: center;
                 color: white;
+                background: transparent;
+                transition: 250ms linear;
 
                 &:hover {
-                    background: rgb(50, 53, 59);
+                    background: rgb(88, 101, 242);
                     cursor: pointer;
+                }
+
+                &[id='main-logout'] {
+                    color: rgb(226, 57, 57) !important;
+                }
+
+                &[id='main-logout']:hover {
+                    color: white !important;
+                    background: rgba(245, 71, 71, 0.79) !important;
                 }
             }
         }
@@ -366,7 +369,7 @@ div *::-webkit-scrollbar-thumb {
 
                     &[id="obj-insert"]:hover {
                         font-size: 80pt;
-                        color: rgb(83, 83, 83);
+                        color: rgb(88, 101, 242);
                     }
 
                     & > img {

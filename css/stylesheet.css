@@ -175,13 +175,6 @@ div *::-webkit-scrollbar-thumb {
 .back-layer .category-insert .main .body .input:empty:not(:focus)::before, .back-layer .category-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-insert .main .body .input:empty:not(:focus)::before, .back-layer .object-insert .main .body .info:empty:not(:focus)::before, .back-layer .object-viewer .main .body .input:empty:not(:focus)::before, .back-layer .object-viewer .main .body .info:empty:not(:focus)::before, .back-layer .signin-form .main .body .input:empty:not(:focus)::before, .back-layer .signin-form .main .body .info:empty:not(:focus)::before, .back-layer .signup-form .main .body .input:empty:not(:focus)::before, .back-layer .signup-form .main .body .info:empty:not(:focus)::before {
   content: attr(data-placeholder);
 }
-.back-layer .category-insert .main .body .error, .back-layer .object-insert .main .body .error, .back-layer .object-viewer .main .body .error, .back-layer .signin-form .main .body .error, .back-layer .signup-form .main .body .error {
-  flex: 0 1 auto;
-  font-size: 12pt;
-  outline: none;
-  justify-content: center;
-  color: #e23939;
-}
 .back-layer .category-insert .main .body .confirm, .back-layer .object-insert .main .body .confirm, .back-layer .object-viewer .main .body .confirm, .back-layer .signin-form .main .body .confirm, .back-layer .signup-form .main .body .confirm {
   margin: 12px auto;
   padding: 8px 18px;
@@ -278,10 +271,19 @@ div *::-webkit-scrollbar-thumb {
   font-size: 14pt;
   align-items: center;
   color: white;
+  background: transparent;
+  transition: 250ms linear;
 }
 .main-mount .main-container .header .item:hover {
-  background: #32353b;
+  background: #5865f2;
   cursor: pointer;
+}
+.main-mount .main-container .header .item[id=main-logout] {
+  color: #e23939 !important;
+}
+.main-mount .main-container .header .item[id=main-logout]:hover {
+  color: white !important;
+  background: rgba(245, 71, 71, 0.79) !important;
 }
 .main-mount .main-container .content {
   padding: 0 0 24px;
@@ -320,7 +322,7 @@ div *::-webkit-scrollbar-thumb {
 }
 .main-mount .main-container .content .items .item[id=obj-insert]:hover {
   font-size: 80pt;
-  color: #535353;
+  color: #5865f2;
 }
 .main-mount .main-container .content .items .item > img {
   width: 256px;

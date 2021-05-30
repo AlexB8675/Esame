@@ -4,6 +4,11 @@
     $kind       = $_POST['kind'];
 
     print match ($kind) {
+        'session' => (function () use ($connection) {
+            start_session();
+            return json_encode($_SESSION);
+        })(),
+
         'signin' => (function () use ($connection) {
             $username = $_POST['username'];
             $password = hash('sha512', $_POST['password']);
@@ -13,12 +18,14 @@
             if ($result->num_rows === 0) {
                 print json_encode([
                     'message' => 'unknown_user',
-                    'error'   => '403'
+                    'error'   => 403
                 ]);
             } else {
-                print json_encode([
+                session_start();
+                $_SESSION = [
                     'username' => $username,
-                ]);
+                ];
+                print json_encode($_SESSION);
             }
         })(),
 
@@ -31,9 +38,14 @@
             if (!$result) {
                 die(json_encode([
                     'message' => 'fatal_found',
-                    'error'   => '401'
+                    'error'   => 401
                 ]));
             }
             return json_empty();
         })(),
+
+        'destroy' => (function () use ($connection) {
+            destroy_session();
+            return json_empty();
+        })()
     };

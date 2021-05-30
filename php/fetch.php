@@ -10,7 +10,7 @@
             if (!$result) {
                 die(json_encode([
                     'message' => 'category_fetch',
-                    'error'   => '500'
+                    'error'   => 500
                 ]));
             }
             return json_encode($result->get_result()->fetch_all(MYSQLI_ASSOC));
@@ -30,7 +30,7 @@
             if (!$result) {
                 die(json_encode([
                     'message' => 'object_fetch',
-                    'error'   => '500'
+                    'error'   => 500
                 ]));
             }
             return json_encode($result->get_result()->fetch_all(MYSQLI_ASSOC));

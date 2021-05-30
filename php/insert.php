@@ -11,7 +11,7 @@
             if (!$result) {
                 die(json_encode([
                     'message' => 'category_insert',
-                    'error'   => '500'
+                    'error'   => 500
                 ]));
             }
             return json_encode([

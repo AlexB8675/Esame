@@ -65,26 +65,118 @@ $(function () {
                                 object_handler(each);
                             }));
                 }
-                if ($(ctg).data('id') !== -1) {
-                    items.append(
-                        $('<div class="item" id="obj-insert">')
-                            .html('&plus;')
-                            .on('click', function () {
-                                $('.back-layer')
-                                    .css({
-                                        'z-index': '1',
-                                        'opacity': '1'
-                                    })
-                                    .children('.object-insert')
-                                    .css({
-                                        'visibility': 'visible'
-                                    });
-                                install_backlayer_hide();
-                            }));
-                }
+                login({
+                    kind: 'session'
+                }, (response) => {
+                    if ($(ctg).data('id') !== -1 && response['username'] === 'admin') {
+                        items.append(
+                            $('<div class="item" id="obj-insert">')
+                                .html('&plus;')
+                                .on('click', function () {
+                                    $('.back-layer')
+                                        .css({
+                                            'z-index': '1',
+                                            'opacity': '1'
+                                        })
+                                        .children('.object-insert')
+                                        .css({
+                                            'visibility': 'visible'
+                                        });
+                                    install_backlayer_hide();
+                                }));
+                    }
+                });
             });
             $('#ctg-items div[class="item"]').attr('aria-label', '');
             $(ctg).attr('aria-label', 'active');
+        }
+    };
+
+    const insert_login_buttons = () => {
+        $('#main-header')
+            .append(
+                $('<div class="item" id="signin">Accedi</div>')
+                    .on('click', function () {
+                        $('.back-layer')
+                            .css({
+                                'z-index': '1',
+                                'opacity': '1'
+                            })
+                            .children('.signin-form')
+                            .css({
+                                'visibility': 'visible'
+                            });
+                        install_backlayer_hide(() => {
+                            $('#signin-username').val('');
+                            $('#signin-password').val('');
+                        });
+                    }))
+            .append(
+                $('<div class="item" id="signup">Registrati</div>')
+                    .on('click', function () {
+                        $('.back-layer')
+                            .css({
+                                'z-index': '1',
+                                'opacity': '1'
+                            })
+                            .children('.signup-form')
+                            .css({
+                                'visibility': 'visible'
+                            });
+                        install_backlayer_hide(() => {
+                            $('#signin-username').val('');
+                            $('#signin-password').val('');
+                        });
+                    }))
+    };
+
+    const login_handler = (response) => {
+        if ('error' in response) {
+            if (response['message'] === 'unauthorized') {
+                insert_login_buttons();
+            }
+        } else {
+            $('#main-header')
+                .html(`<div class="item">Benvenuto, ${response['username']}</div>`)
+                .append(
+                    $('<div class="item" id="main-logout">')
+                        .html('Logout')
+                        .on('click', function () {
+                            login({
+                                kind: 'destroy'
+                            }, () => {
+                                $('.footer, #obj-insert').remove();
+                                $('#main-header')
+                                    .children()
+                                    .remove();
+                                insert_login_buttons();
+                            });
+                        }));
+            if (response['username'] === 'admin') {
+                $('.sidebar').append(
+                    `<div class="footer">` +
+                        `<div class="separator"></div>` +
+                        `<div class="item" id="ctg-insert">&plus; Inserisci categoria</div>` +
+                    `</div>`);
+                if ($('#ctg-items .item[aria-label="active"]').data('id') !== -1) {
+                    $('#obj-items')
+                        .append(
+                            $('<div class="item" id="obj-insert">')
+                                .html('&plus;')
+                                .on('click', function () {
+                                    $('.back-layer')
+                                        .css({
+                                            'z-index': '1',
+                                            'opacity': '1'
+                                        })
+                                        .children('.object-insert')
+                                        .css({
+                                            'visibility': 'visible'
+                                        });
+                                    install_backlayer_hide();
+                                }));
+                }
+            }
         }
     };
 
@@ -93,8 +185,7 @@ $(function () {
             kind: 'category'
         }, (response) => {
             for (const each of response) {
-                $('#ctg-items').append(
-                    `<div class="item" data-id="${each['id_categoria']}" aria-label>${each['nome']}</div>`);
+                $('#ctg-items').append(`<div class="item" data-id="${each['id_categoria']}" aria-label>${each['nome']}</div>`);
             }
             $('#ctg-items div[class="item"]')
                 .on('click', function () {
@@ -105,7 +196,11 @@ $(function () {
         });
     })();
 
-    (() => { // Stores all the data prior to inserting an object.
+    (() => { // Checks for session and privileges.
+        login({ kind: 'session' }, login_handler);
+    })();
+
+    (() => { // Setup object data handlers.
         let image = null;
         let audio = null;
         $('#obj-input-image')
@@ -186,46 +281,6 @@ $(function () {
             });
     })();
 
-    $('#signin')
-        .on('click', function () {
-            $('.back-layer')
-                .css({
-                    'z-index': '1',
-                    'opacity': '1'
-                })
-                .children('.signin-form')
-                .css({
-                    'visibility': 'visible'
-                });
-            install_backlayer_hide(() => {
-                setTimeout(() => {
-                    $('#signin-username').html('');
-                    $('#signin-password').html('');
-                }, 5000);
-                $('#signin-error').html('');
-            });
-        });
-
-    $('#signup')
-        .on('click', function () {
-            $('.back-layer')
-                .css({
-                    'z-index': '1',
-                    'opacity': '1'
-                })
-                .children('.signup-form')
-                .css({
-                    'visibility': 'visible'
-                });
-            install_backlayer_hide(() => {
-                setTimeout(() => {
-                    $('#signin-username').html('');
-                    $('#signin-password').html('');
-                }, 5000);
-                $('#signin-error').html('');
-            });
-        });
-
     $('#ctg-search')
         .on('keyup', function (event) {
             const search = $(this);
@@ -298,29 +353,10 @@ $(function () {
             }
         });
 
-    $('#obj-submit')
-        .on('click', function () {
-            const object = $('#obj-input').text().trim();
-            if (object.length !== 0) {
-                insert({
-                    kind: 'object',
-                    oggetto: object
-                }, (response) => {
-                    $('#obj-input').html('');
-                    $('.back-layer').trigger('mousedown');
-                    $('#obj-insert').before(
-                        $('<div class="item">')
-                            .css({
-                                'background': `url("${response['percorso']}") rgb(64, 68, 75) no-repeat center center`
-                            }));
-                });
-            }
-        });
-
     $('#signin-submit')
         .on('click', function () {
-            const username = $('#signin-username').text().trim();
-            const password = $('#signin-password').text().trim();
+            const username = $('#signin-username').val().trim();
+            const password = $('#signin-password').val().trim();
             login({
                 kind: 'signin',
                 username: username,
@@ -328,18 +364,19 @@ $(function () {
             }, (response) => {
                 if ('error' in response) {
                     if (response['message'] === 'unknown_user') {
-                        $('#signin-error').text('username o password errati.');
+                        alert('username o password errati.');
                     }
                 } else {
-                    $('#signin-error').text('');
+                    login_handler(response);
                 }
+                $('.back-layer').trigger('mousedown');
             });
         });
 
     $('#signup-submit')
         .on('click', function () {
-            const username = $('#signup-username').text().trim();
-            const password = $('#signup-password').text().trim();
+            const username = $('#signup-username').val().trim();
+            const password = $('#signup-password').val().trim();
             login({
                 kind: 'signup',
                 username: username,
@@ -347,11 +384,10 @@ $(function () {
             }, (response) => {
                 if ('error' in response) {
                     if (response['message'] === 'fatal_found') {
-                        $('#signup-error').html('utente gi&agrave; registrato');
+                        alert('utente gi&agrave; registrato');
                     }
-                } else {
-                    $('#signup-error').text('');
                 }
+                $('.back-layer').trigger('mousedown');
             });
         });
 });
@@ -375,10 +411,12 @@ const fetch = (function () {
     }
 })();
 
-
 const login = (function () {
     let session = null;
     return function (data, callback) {
+        if (data['kind'] === 'destroy') {
+            session = null;
+        }
         if (session === null) {
             $.ajax({
                 url: 'php/login.php',
@@ -387,7 +425,10 @@ const login = (function () {
                 dataType: 'json',
                 cache: true,
                 success: (response) => {
-                    callback(session = response);
+                    if ('username' in response) {
+                        session = response;
+                    }
+                    callback(response);
                 }
             });
         } else {
@@ -395,8 +436,6 @@ const login = (function () {
         }
     };
 })();
-
-
 
 function insert(data, callback) {
     let settings = {
