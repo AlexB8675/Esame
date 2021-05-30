@@ -158,6 +158,19 @@ $(function () {
                         `<div class="separator"></div>` +
                         `<div class="item" id="ctg-insert">&plus; Inserisci categoria</div>` +
                     `</div>`);
+                $('#ctg-insert')
+                    .on('click', function () {
+                        $('.back-layer')
+                            .css({
+                                'z-index': '1',
+                                'opacity': '1'
+                            })
+                            .children('.category-insert')
+                            .css({
+                                'visibility': 'visible'
+                            });
+                        install_backlayer_hide();
+                    });
                 if ($('#ctg-items .item[aria-label="active"]').data('id') !== -1) {
                     $('#obj-items')
                         .append(
@@ -302,20 +315,6 @@ $(function () {
             }
         });
 
-    $('#ctg-insert')
-        .on('click', function () {
-            $('.back-layer')
-                .css({
-                    'z-index': '1',
-                    'opacity': '1'
-                })
-                .children('.category-insert')
-                .css({
-                    'visibility': 'visible'
-                });
-            install_backlayer_hide();
-        });
-
     $('#ctg-input')
         .on('keyup', function (event) {
             if (event.key === 'Enter') {
@@ -327,22 +326,23 @@ $(function () {
     $('#ctg-submit')
         .on('click', function () {
             const category = $('#ctg-input').text().trim();
-            if (category.length !== 0) {
-                insert({
-                    kind: 'category',
-                    categoria: category
-                }, (response) => {
-                    $('#ctg-input').html('');
-                    $('.back-layer').trigger('mousedown');
-                    $('#ctg-items')
-                        .append(`<div class="item" data-id="${response['id']}">${response['nome']}</div>`)
-                        .children('div[class="item"]:last-child')
-                        .on('click', function () {
-                            category_handler(this);
-                        })
-                        .trigger('click');
-                });
+            if (category.length === 0) {
+                alert('Inserisci il nome di una categoria.');
             }
+            insert({
+                kind: 'category',
+                categoria: category
+            }, (response) => {
+                $('#ctg-input').html('');
+                $('.back-layer').trigger('mousedown');
+                $('#ctg-items')
+                    .append(`<div class="item" data-id="${response['id']}">${response['nome']}</div>`)
+                    .children('div[class="item"]:last-child')
+                    .on('click', function () {
+                        category_handler(this);
+                    })
+                    .trigger('click');
+            });
         });
 
     $('#obj-input')
@@ -384,7 +384,7 @@ $(function () {
             }, (response) => {
                 if ('error' in response) {
                     if (response['message'] === 'fatal_found') {
-                        alert('utente gi&agrave; registrato');
+                        alert('utente già registrato');
                     }
                 }
                 $('.back-layer').trigger('mousedown');
@@ -417,7 +417,7 @@ const login = (function () {
         if (data['kind'] === 'destroy') {
             session = null;
         }
-        if (session === null) {
+        if (session === null || 'error' in session) {
             $.ajax({
                 url: 'php/login.php',
                 type: 'POST',
@@ -425,7 +425,7 @@ const login = (function () {
                 dataType: 'json',
                 cache: true,
                 success: (response) => {
-                    if ('username' in response) {
+                    if (response === {}) {
                         session = response;
                     }
                     callback(response);
